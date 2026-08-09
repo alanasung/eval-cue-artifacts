@@ -265,3 +265,5 @@ class Config:
     logging: LoggingConfig = field(default_factory=LoggingConfig)
     experiment: ExperimentConfig = field(default_factory=ExperimentConfig)
     run: RunConfig = field(default_factory=RunConfig)
+    # Smoke-only synthetic activations. Pilot defaults measured (False).
+    force_synthetic: bool = False

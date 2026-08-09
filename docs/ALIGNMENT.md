@@ -1,15 +1,14 @@
 # ALIGNMENT — eval-awareness-hardening
 
-## Codex GPT-5 Sol
+## Codex GPT-5 Sol (p4)
 - Verdict: MINOR_DRIFT
-- Summary: The idea closely implements the mentor's core probe-supervised evaluation-refinement loop, with minor drift from omitting the explicitly requested diffusion and latent-reasoning extensions and relying on one potentially gameable monitor.
+- Summary: The proposal closely implements the mentor's core white-box-supervised evaluation-refinement loop, with minor drift from omitting diffusion/latent-reasoning architectures and substituting for some named monitor methods (NLA/J-lens/SAE).
+- Detail: `orchestration/out/align/eval-awareness-hardening.json`
 
-## Grok
+## Grok (p4 dual)
 - Verdict: MINOR_DRIFT
-- Summary: Nails the probe-supervised iterative eval-refinement loop and ToC, but narrows monitors to one probe and drops the promised diffusion/latent-reasoning expansion.
-- Detail: see `orchestration/out/grok/align/eval-awareness-hardening.md` and `eval-awareness-hardening.json`.
+- Summary: Core rewrite loop + construct gates match the mentor posting; residual drift is labeled stand-in monitors for the named white-box family and scoped-out diffusion/latent arms.
+- Detail: `orchestration/out/grok/align/eval-awareness-hardening.p4.md`
 
 ## Reconciliation
-Both MINOR_DRIFT (monitor diversity + diffusion/latent arms). Domain adds a held-out monitor panel; diffusion/latent remain out of pilot scope. Proceed with notes.
-
-Operating judgment: proceed.
+Proceed. Diffusion/latent and full NLA/J-lens/SAE panel remain scoped notes, not a different research program. P4 adds a real second monitor (`heldout_linear`) and construct-gated rewrite.

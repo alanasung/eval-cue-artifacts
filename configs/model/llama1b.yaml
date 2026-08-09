@@ -1,7 +1,7 @@
 # A second training lineage at comparable scale to qwen1.5b. Lineage is varied
 # separately from parameter count so the two effects stay separable.
 name: meta-llama/Llama-3.2-1B-Instruct
-revision: main
+revision: 9213176726f574b556790deb65791e0c5aa438b6
 dtype: FLOAT32
 device: AUTO
 batch_size: 4

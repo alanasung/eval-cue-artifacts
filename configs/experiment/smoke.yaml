@@ -23,5 +23,7 @@ experiment:
 data:
   n_items: 16
 
+force_synthetic: true
+
 cache:
   namespace: smoke

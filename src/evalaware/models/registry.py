@@ -85,7 +85,7 @@ _SPECS: tuple[tuple[str, ModelSpec], ...] = (
             params_b=0.16,
             family="pythia",
             fits_on_m4=True,
-            revision="main",
+            revision="50f5173d932e8e61f858120bcb800b97af589f46",
             notes=(
                 "Public intermediate training checkpoints make this the model for "
                 "any claim about how a property emerges during training."
@@ -110,7 +110,7 @@ _SPECS: tuple[tuple[str, ModelSpec], ...] = (
             params_b=0.5,
             family="qwen",
             fits_on_m4=True,
-            revision="main",
+            revision="7ae557604adf67be50417f59c2c2f167def9a775",
             notes=(
                 "Default pilot model: instruction-tuned, small enough for full-layer "
                 "activation capture, and standard llama-style attribute names."
@@ -124,7 +124,7 @@ _SPECS: tuple[tuple[str, ModelSpec], ...] = (
             params_b=1.24,
             family="llama",
             fits_on_m4=True,
-            revision="main",
+            revision="9213176726f574b556790deb65791e0c5aa438b6",
             notes=(
                 "Gated on the Hub, so it needs HF_TOKEN; call require_api_key before "
                 "loading. Strongest instruction-following in the fits-locally tier."
@@ -152,7 +152,7 @@ _SPECS: tuple[tuple[str, ModelSpec], ...] = (
             params_b=1.54,
             family="qwen",
             fits_on_m4=True,
-            revision="main",
+            revision="989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
             notes=(
                 "Third point on a Qwen scaling curve. Capture every layer in float16 "
                 "here; float32 full-depth capture is tight on 16 GiB."

@@ -1,7 +1,7 @@
 # Default pilot model: small enough that a full pass finishes on an M4 in
 # minutes, instruction-tuned so prompt-following is not the bottleneck.
 name: Qwen/Qwen2.5-0.5B-Instruct
-revision: main
+revision: 7ae557604adf67be50417f59c2c2f167def9a775
 dtype: FLOAT32
 device: AUTO
 batch_size: 8

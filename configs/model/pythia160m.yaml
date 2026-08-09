@@ -1,7 +1,7 @@
 # Smallest tier. Its job is to make the whole pipeline runnable in under a
 # minute during development; results at this scale are for plumbing, not claims.
 name: EleutherAI/pythia-160m
-revision: main
+revision: 50f5173d932e8e61f858120bcb800b97af589f46
 dtype: FLOAT32
 device: AUTO
 batch_size: 32

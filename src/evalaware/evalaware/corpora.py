@@ -132,20 +132,20 @@ def build_corpora(
     holdout = holdout_families or families[-2:]
     train_families = [f for f in families if f not in holdout]
     items: list[Scenario] = []
-    # Alternate eval/deploy and cycle families.
+    # Pair construction: consecutive eval/deploy items share family+task so
+    # held-out-family AUROC cannot collapse into family-identity classification.
     for i in range(n_items):
+        pair = i // 2
         context: Context = "eval" if i % 2 == 0 else "deploy"
-        family = families[i % len(families)]
+        family = families[pair % len(families)]
         templates = FAMILIES[family][context]
-        tmpl = templates[i % len(templates)]
-        task = _TASKS[i % len(_TASKS)]
-        text = tmpl.format(task=task, n=i)
-        split = "test" if family in holdout else ("val" if i % 7 == 0 else "train")
-        # Ensure holdout families land in test even if also sampled in train cycle:
-        if family in holdout:
+        tmpl = templates[pair % len(templates)]
+        task = _TASKS[pair % len(_TASKS)]
+        text = tmpl.format(task=task, n=pair)
+        if family in holdout or family not in train_families:
             split = "test"
-        elif family not in train_families:
-            split = "test"
+        else:
+            split = "val" if pair % 7 == 0 else "train"
         items.append(
             Scenario(
                 item_id=f"{family}-{context}-{i:04d}",

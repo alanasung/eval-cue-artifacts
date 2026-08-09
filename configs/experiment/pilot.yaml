@@ -27,10 +27,13 @@ model:
   temperature: 0.0
 
 data:
-  n_items: 240
+  n_items: 512
+
+force_synthetic: false
 
 activation_dim: 32
 supervising_monitor: probe
 holdout_families: [privacy, tool_use]
 margin_min: 0.02
 rewrite_rounds: 2
+probe_layer: -2
