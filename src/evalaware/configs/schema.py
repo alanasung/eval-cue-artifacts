@@ -267,3 +267,10 @@ class Config:
     run: RunConfig = field(default_factory=RunConfig)
     # Smoke-only synthetic activations. Pilot defaults measured (False).
     force_synthetic: bool = False
+    # Domain knobs from experiment presets.
+    activation_dim: int = 32
+    supervising_monitor: str = "probe"
+    holdout_families: list[str] = field(default_factory=lambda: ["privacy", "tool_use"])
+    margin_min: float = 0.02
+    rewrite_rounds: int = 2
+    probe_layer: int = -2
