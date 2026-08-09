@@ -111,16 +111,3 @@ STAGES: dict[str, Callable[[DictConfig, Path], dict[str, Any]]] = {
     "inflation": inflation,
     "rewrite": rewrite,
 }
-
-# make pilot / smoke contract
-_std = list(STAGES.values())
-_names = list(STAGES.keys())
-if len(_std) >= 5:
-    STAGES.update({
-        "build_dataset": _std[0],
-        "collect": _std[1],
-        "fit": _std[2],
-        "evaluate": _std[3],
-        "report": _std[4],
-    })
-
