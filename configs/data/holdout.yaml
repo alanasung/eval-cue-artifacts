@@ -1,0 +1,11 @@
+# Held-out generalization split: no training portion at all, so a config that
+# accidentally fits on this set fails loudly at split time instead of quietly
+# inflating a number.
+name: holdout
+n_items: 256
+seed: 17
+train_frac: 0.0
+val_frac: 0.0
+test_frac: 1.0
+shuffle: false
+max_prompt_tokens: 512

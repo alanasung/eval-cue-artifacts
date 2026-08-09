@@ -1,0 +1,80 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "feature/**", "feat/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install ruff
+        run: pip install ruff==0.8.4
+      - name: Ruff
+        run: ruff check src/ tests/ scripts/
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          pip install -U pip
+          pip install -e ".[test]"
+          pip install -r requirements.txt
+      - name: Pytest
+        run: python -m pytest tests/ -v --tb=short -q
+
+  api-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          pip install -U pip
+          pip install -e ".[test]"
+          pip install -r requirements.txt
+      - name: SDK / API contract
+        run: python -m pytest tests/test_sdk.py -v --tb=long
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          pip install -U pip
+          pip install -e .
+          pip install mypy==1.14.1
+      - name: Mypy
+        run: python -m mypy src/evalaware --ignore-missing-imports
+
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          pip install -U pip
+          pip install -e ".[test]"
+          pip install -r requirements.txt
+      - name: Coverage (>=60%)
+        run: python -m pytest tests/ --cov=evalaware --cov-report=term-missing --cov-fail-under=60 -q

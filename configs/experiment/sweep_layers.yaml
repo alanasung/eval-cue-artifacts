@@ -1,0 +1,27 @@
+# @package _global_
+#
+# Depth sweep. Reported per layer rather than at an argmax layer: picking the
+# best layer post hoc and reporting only that number is selection on the test
+# set, so the whole curve goes in the results table.
+
+defaults:
+  - base_experiment
+  - override /sweep: layers
+  - override /model: gpt2
+  - override /data: pilot
+  - override /eval: default
+  - override /logging: quiet
+  - _self_
+
+experiment:
+  name: sweep_layers
+  task_id: E04
+  description: Cross-product sweep over probe layer and seed, reported as a curve.
+  stages: [build_dataset, collect, fit, evaluate]
+  tags: [sweep, layers]
+
+sweep:
+  max_cells: 24
+
+cache:
+  namespace: sweep_layers

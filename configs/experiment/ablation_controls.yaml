@@ -1,0 +1,26 @@
+# @package _global_
+#
+# Runs the control arms whose job is to kill a false positive. If the headline
+# effect survives shuffled labels or a random direction, the effect is a
+# property of the pipeline rather than of the model, and the main result is not
+# reportable until that is explained.
+
+defaults:
+  - base_experiment
+  - override /ablation: controls
+  - override /data: pilot
+  - override /eval: strict
+  - _self_
+
+experiment:
+  name: ablation_controls
+  task_id: A01
+  description: Control arms - shuffled label, input-only, metadata-only, random direction.
+  stages: [build_dataset, collect, fit, ablate, evaluate, report]
+  tags: [ablation, control, falsification]
+
+ablation:
+  n_seeds: 5
+
+cache:
+  namespace: ablation_controls

@@ -1,0 +1,16 @@
+# The scaled-up profile. This documents the run rather than enabling it on the
+# development machine: at this memory budget the pipeline is expected to need a
+# rented GPU, and `allow_unsupported_hardware` is set so the device check warns
+# instead of refusing when the target is neither MPS nor a supported CUDA build.
+#
+# Determinism is off deliberately: at this scale the throughput cost of
+# deterministic kernels is real, and the claim the full run supports is a mean
+# over seeds rather than a bit-exact reproduction.
+profile: FULL
+seed: 0
+deterministic: false
+resume: true
+max_memory_gb: 80.0
+allow_unsupported_hardware: true
+save_git_sha: true
+save_resolved_config: true

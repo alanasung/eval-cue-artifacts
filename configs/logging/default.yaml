@@ -1,0 +1,7 @@
+level: INFO
+format: "%(asctime)s | %(levelname)-7s | %(name)s | %(message)s"
+log_to_file: true
+# Every call to a model used as part of the measurement instrument is appended
+# to the run's JSONL log. A judged or monitored result whose prompts were not
+# recorded cannot be audited later.
+log_llm_calls: true

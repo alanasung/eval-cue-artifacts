@@ -1,0 +1,11 @@
+# The scaled-up item set. Documented so the full run is specified, not so it can
+# be launched on a laptop: at this size the generation stage is GPU-bound and is
+# expected to need rented compute.
+name: full
+n_items: 8192
+seed: 0
+train_frac: 0.7
+val_frac: 0.1
+test_frac: 0.2
+shuffle: true
+max_prompt_tokens: 1024

@@ -1,0 +1,12 @@
+# Reporting setting: a tight tolerance band, a wide confidence margin (so only
+# genuinely confident errors are called silent), more resamples, and a full
+# layer ladder. Slower, and the configuration reported numbers are produced
+# under.
+threshold: 0.5
+tolerance: 0.05
+confidence_margin: 0.3
+bootstrap_samples: 20000
+bootstrap_alpha: 0.01
+layers: [2, 4, 6, 8, 10, 12, 14, 16]
+stratify_by: []
+min_stratum_size: 30

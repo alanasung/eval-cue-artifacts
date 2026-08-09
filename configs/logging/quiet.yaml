@@ -1,0 +1,6 @@
+# Warnings and above, no run log file. Used inside sweeps, where each cell would
+# otherwise write a log nobody reads.
+level: WARNING
+format: "%(levelname)-7s | %(name)s | %(message)s"
+log_to_file: false
+log_llm_calls: true

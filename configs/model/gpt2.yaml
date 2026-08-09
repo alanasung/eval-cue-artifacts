@@ -1,0 +1,13 @@
+# Base (non-instruction-tuned) model. Useful when the question is about
+# mechanism rather than about instruction following, and cheap enough that a
+# sweep over every layer is affordable.
+name: openai-community/gpt2
+revision: 607a30d783dfa663caf39e06633721c8d4cfcd7e
+dtype: FLOAT32
+device: AUTO
+batch_size: 16
+max_new_tokens: 64
+temperature: 1.0
+top_p: 0.95
+trust_remote_code: false
+attn_implementation: eager

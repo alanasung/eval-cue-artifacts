@@ -1,0 +1,12 @@
+# Same lineage as qwen0.5b, one tier up. This is the largest model the pilot
+# path is expected to hold in unified memory alongside a cached activation set.
+name: Qwen/Qwen2.5-1.5B-Instruct
+revision: main
+dtype: FLOAT32
+device: AUTO
+batch_size: 4
+max_new_tokens: 128
+temperature: 0.7
+top_p: 0.95
+trust_remote_code: false
+attn_implementation: eager

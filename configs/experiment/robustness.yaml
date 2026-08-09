@@ -1,0 +1,27 @@
+# @package _global_
+#
+# Perturbs prompt phrasing, option ordering, and formatting while holding the
+# item content fixed. This separates a finding about the model from a finding
+# about one prompt template, which is the most common way a small-scale result
+# fails to replicate.
+
+defaults:
+  - base_experiment
+  - override /model: qwen0.5b
+  - override /data: holdout
+  - override /eval: stratified
+  - override /sweep: seeds
+  - _self_
+
+experiment:
+  name: robustness
+  task_id: E07
+  description: Template and ordering perturbations on held-out items, stratified by family.
+  stages: [build_dataset, collect, fit, evaluate, report]
+  tags: [robustness, held-out]
+
+sweep:
+  max_cells: 20
+
+cache:
+  namespace: robustness

@@ -1,0 +1,22 @@
+# @package _global_
+#
+# The number every other preset is compared against. Nothing is ablated, nothing
+# is swept, and the instrument runs at its reporting settings, so a difference
+# elsewhere is attributable to the thing that preset changed.
+
+defaults:
+  - base_experiment
+  - override /model: qwen0.5b
+  - override /data: pilot
+  - override /eval: strict
+  - _self_
+
+experiment:
+  name: baseline
+  task_id: E01
+  description: Unmodified model on the pilot item set at reporting settings.
+  stages: [build_dataset, collect, fit, evaluate, report]
+  tags: [baseline, reportable]
+
+run:
+  seed: 0

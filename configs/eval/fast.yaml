@@ -1,0 +1,11 @@
+# Development setting: fewer bootstrap resamples and a single probe layer, so
+# the evaluation stage is not the thing you are waiting on while iterating.
+# Intervals from this config are too wide to report.
+threshold: 0.5
+tolerance: 0.1
+confidence_margin: 0.2
+bootstrap_samples: 200
+bootstrap_alpha: 0.05
+layers: [8]
+stratify_by: []
+min_stratum_size: 10

@@ -1,0 +1,10 @@
+# Every directory the code is allowed to write to. Nothing outside this list is
+# created by library code, which is what makes `make clean` safe and the
+# .gitignore rules sufficient.
+root: .
+data: data
+cache: .cache/artifacts
+runs: runs
+results: results
+figures: results/figures
+tables: results/tables

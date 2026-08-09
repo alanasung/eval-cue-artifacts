@@ -1,0 +1,9 @@
+# Scale sweep across model tiers at fixed data and fixed seeds. Reading a trend
+# off three points is weak evidence, so the sweep records per-cell wall-clock
+# alongside the metric: a "trend" that tracks compute budget is not a scale
+# effect.
+enabled: true
+seeds: [0, 1, 2]
+grid:
+  model: [pythia160m, gpt2, qwen0.5b, qwen1.5b]
+max_cells: 24

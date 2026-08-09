@@ -1,0 +1,13 @@
+# The control arms exist to make a positive result falsifiable.
+#
+# shuffled_label  destroys the association the main arm claims to find; if the
+#                 effect survives, the effect is an artefact of the pipeline.
+# input_only      withholds the internal signal and keeps the surface input, so
+#                 an "internal" result that is recoverable from the input alone
+#                 is caught.
+# metadata_only   keeps only coarse surface metadata, catching shortcut learning.
+# random_direction  substitutes an arbitrary direction for the fitted one, which
+#                 is the null for anything projection-based.
+enabled: [shuffled_label, input_only, metadata_only, random_direction]
+control_arms: [shuffled_label, random_direction]
+n_seeds: 5

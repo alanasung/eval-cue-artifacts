@@ -1,0 +1,29 @@
+# @package _global_
+#
+# The scaled-up run. This preset is a specification, not an invitation: at this
+# item count and batch size the collect stage is GPU-bound and is expected to
+# need rented compute. It is checked in so the scaled run is reviewable before
+# anyone pays for it.
+
+defaults:
+  - base_experiment
+  - override /model: qwen1.5b
+  - override /data: full
+  - override /eval: strict
+  - override /run: full
+  - override /reporting: paper
+  - _self_
+
+experiment:
+  name: full
+  task_id: E03
+  description: Scaled run at full item count. Requires a real GPU; not a local target.
+  stages: [build_dataset, collect, fit, evaluate, ablate, report]
+  tags: [full, gpu-required]
+
+model:
+  batch_size: 32
+  dtype: BFLOAT16
+
+cache:
+  namespace: full

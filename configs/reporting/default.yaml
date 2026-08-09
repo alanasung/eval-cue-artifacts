@@ -1,0 +1,12 @@
+# Figures are written in three formats from one call: PDF for the paper, SVG
+# with live text for editing, PNG at 300 dpi for slides and issue threads.
+figures:
+  formats: [pdf, svg, png]
+  dpi: 300
+  width_in: 6.6
+  height_in: 2.6
+  palette: colorblind
+  font_family: serif
+latex: true
+markdown: true
+caption_from_numbers: true

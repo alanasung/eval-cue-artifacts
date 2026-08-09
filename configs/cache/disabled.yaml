@@ -1,0 +1,8 @@
+# Recompute everything. Used when the question is "is the cache lying to me?",
+# and by the timing arm of the sweep, where a cache hit would make the measured
+# wall-clock meaningless.
+enabled: false
+version: v1
+strict_version: true
+namespace: nocache
+overwrite: true

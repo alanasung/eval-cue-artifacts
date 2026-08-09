@@ -1,0 +1,8 @@
+# Version-pinned artifact cache. `strict_version: true` is the setting that
+# stops activations from two model revisions being mixed into one fit; turning
+# it off is a debugging affordance, never a run setting.
+enabled: true
+version: v1
+strict_version: true
+namespace: default
+overwrite: false

@@ -1,0 +1,29 @@
+# @package _global_
+#
+# Scale sweep across four model tiers. Wall-clock is recorded per cell because a
+# monotone trend across tiers that also tracks the compute each tier received is
+# a budget effect, not a scale effect.
+
+defaults:
+  - base_experiment
+  - override /sweep: scale
+  - override /data: pilot
+  - override /eval: default
+  - override /logging: quiet
+  - _self_
+
+experiment:
+  name: sweep_scale
+  task_id: E05
+  description: Sweep over model tiers at fixed data, with per-cell wall-clock recorded.
+  stages: [build_dataset, collect, fit, evaluate]
+  tags: [sweep, scale]
+
+sweep:
+  max_cells: 24
+
+cache:
+  namespace: sweep_scale
+
+run:
+  max_memory_gb: 14.0

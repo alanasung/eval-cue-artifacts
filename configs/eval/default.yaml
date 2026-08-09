@@ -1,0 +1,18 @@
+# Decision gate and tolerance band for the failure taxonomy, plus the bootstrap
+# settings behind every reported interval.
+#
+# `threshold` is the boundary on the continuous score; `tolerance` separates
+# "correct" from "imprecise" on the right side of that boundary;
+# `confidence_margin` is how far from the boundary a wrong answer has to sit
+# before it counts as a *silent* failure rather than a loud one. These are
+# instrument parameters, not tuned hyperparameters -- changing them changes what
+# the numbers mean, so they are set once here and reported alongside results.
+threshold: 0.5
+tolerance: 0.1
+confidence_margin: 0.2
+bootstrap_samples: 10000
+bootstrap_alpha: 0.05
+# Valid for GPT-2 (12 layers, indices 0..11) and for deeper models alike.
+layers: [2, 4, 6]
+stratify_by: []
+min_stratum_size: 20

@@ -1,0 +1,12 @@
+# Stratified evaluation. The strata are task-structural (item difficulty,
+# prompt template family, item source) rather than demographic: the mechanism
+# is per-stratum n with a small-stratum flag, and the attributes are whatever
+# the experiment actually varies.
+threshold: 0.5
+tolerance: 0.1
+confidence_margin: 0.2
+bootstrap_samples: 10000
+bootstrap_alpha: 0.05
+layers: [4, 8, 12]
+stratify_by: [difficulty, template_family, item_source]
+min_stratum_size: 20

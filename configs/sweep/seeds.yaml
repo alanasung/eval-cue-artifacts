@@ -1,0 +1,6 @@
+# Seed-only sweep. Its purpose is to establish the noise floor: no effect
+# smaller than the seed-to-seed spread measured here gets reported as an effect.
+enabled: true
+seeds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+grid: {}
+max_cells: 16

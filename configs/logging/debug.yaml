@@ -1,0 +1,4 @@
+level: DEBUG
+format: "%(asctime)s | %(levelname)-7s | %(name)s | %(funcName)s:%(lineno)d | %(message)s"
+log_to_file: true
+log_llm_calls: true

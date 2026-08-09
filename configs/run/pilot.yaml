@@ -1,0 +1,15 @@
+# The pilot profile is the contract with the local machine: an Apple M4 with 10
+# cores, unified memory, and the MPS backend. No CUDA, no API keys. If a change
+# makes `make pilot` stop finishing here, the change is wrong, not the machine.
+#
+# `deterministic: true` is honest rather than absolute -- MPS has no
+# deterministic-algorithms mode, so seeding reports what it could and could not
+# guarantee and that report lands in the run manifest.
+profile: PILOT
+seed: 0
+deterministic: true
+resume: true
+max_memory_gb: 12.0
+allow_unsupported_hardware: false
+save_git_sha: true
+save_resolved_config: true

@@ -1,0 +1,27 @@
+# @package _global_
+#
+# The smallest configuration that still touches every stage. It exists so CI has
+# something end-to-end to run in under a minute, and so a fresh clone can prove
+# its plumbing before anything is downloaded. Nothing it produces is reportable.
+
+defaults:
+  - base_experiment
+  - override /model: pythia160m
+  - override /data: synthetic
+  - override /eval: fast
+  - override /run: debug
+  - override /reporting: minimal
+  - _self_
+
+experiment:
+  name: smoke
+  task_id: E08
+  description: Minimal end-to-end run over synthetic items. Plumbing check, not a result.
+  stages: [corpora, probe, monitors, construct, verbalized, inflation, rewrite]
+  tags: [smoke, synthetic, not-a-result]
+
+data:
+  n_items: 16
+
+cache:
+  namespace: smoke

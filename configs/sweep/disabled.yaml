@@ -1,0 +1,6 @@
+# No sweep. Named `disabled` rather than `off` because YAML 1.1 parses a bare
+# `off` in a defaults list as the boolean false.
+enabled: false
+seeds: [0]
+grid: {}
+max_cells: 64

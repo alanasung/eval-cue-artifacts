@@ -1,0 +1,27 @@
+# @package _global_
+#
+# Establishes the noise floor before any effect is claimed. Ten seeds, nothing
+# else varied. An effect smaller than the spread measured here is not an effect,
+# and this preset is what produces the number that sentence refers to.
+
+defaults:
+  - base_experiment
+  - override /sweep: seeds
+  - override /ablation: component_dropout
+  - override /data: pilot
+  - override /eval: default
+  - override /logging: quiet
+  - _self_
+
+experiment:
+  name: ablation_seeds
+  task_id: A02
+  description: Seed-only replication across 10 seeds to measure the noise floor.
+  stages: [build_dataset, collect, fit, ablate, evaluate]
+  tags: [ablation, seeds, noise-floor]
+
+ablation:
+  n_seeds: 10
+
+run:
+  deterministic: true

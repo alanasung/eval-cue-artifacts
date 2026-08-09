@@ -1,0 +1,12 @@
+# Synthetic items with planted structure. This is the only dataset that runs
+# with no downloads and no credentials, so it is the default: `make smoke` must
+# work on a fresh clone. Anything produced from it is labelled synthetic in the
+# result payload and is never reportable as a measured finding.
+name: synthetic
+n_items: 64
+seed: 0
+train_frac: 0.6
+val_frac: 0.2
+test_frac: 0.2
+shuffle: true
+max_prompt_tokens: 512

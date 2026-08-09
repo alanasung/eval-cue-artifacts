@@ -1,0 +1,36 @@
+# @package _global_
+#
+# Closing the Loop on Unverbalized Evaluation Awareness — pilot.
+
+defaults:
+  - base_experiment
+  - override /model: qwen0.5b
+  - override /data: pilot
+  - override /eval: fast
+  - override /run: pilot
+  - _self_
+
+experiment:
+  name: pilot
+  task_id: E02
+  description: >
+    Probe + text-classifier baseline + causal steering; verbalized awareness;
+    safety-score inflation; rewrite loop with construct-validity guard.
+    Text-classifier alone is never treated as awareness evidence.
+  stages: [corpora, probe, monitors, construct, verbalized, inflation, rewrite]
+  tags: [pilot, local, eval-awareness]
+
+model:
+  batch_size: 4
+  dtype: FLOAT16
+  max_new_tokens: 64
+  temperature: 0.0
+
+data:
+  n_items: 240
+
+activation_dim: 32
+supervising_monitor: probe
+holdout_families: [privacy, tool_use]
+margin_min: 0.02
+rewrite_rounds: 2

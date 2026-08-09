@@ -1,0 +1,29 @@
+# @package _global_
+#
+# Points the measurement instrument at synthetic data with planted ground truth.
+# This is a test of the instrument, not of the model: it answers "if the effect
+# were there, would this harness find it?" before any real number is collected.
+#
+# Everything it produces is marked synthetic in the result payload and must
+# never be quoted as a measured finding.
+
+defaults:
+  - base_experiment
+  - override /data: synthetic
+  - override /model: pythia160m
+  - override /cache: disabled
+  - override /reporting: minimal
+  - _self_
+
+experiment:
+  name: harness_validation
+  task_id: E06
+  description: Recovery-rate check of the measurement instrument on planted synthetic data.
+  stages: [build_dataset, evaluate]
+  tags: [synthetic, instrument, not-a-result]
+
+eval:
+  bootstrap_samples: 1000
+
+run:
+  seed: 0

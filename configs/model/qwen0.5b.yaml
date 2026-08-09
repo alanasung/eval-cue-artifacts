@@ -1,0 +1,12 @@
+# Default pilot model: small enough that a full pass finishes on an M4 in
+# minutes, instruction-tuned so prompt-following is not the bottleneck.
+name: Qwen/Qwen2.5-0.5B-Instruct
+revision: main
+dtype: FLOAT32
+device: AUTO
+batch_size: 8
+max_new_tokens: 128
+temperature: 0.7
+top_p: 0.95
+trust_remote_code: false
+attn_implementation: eager

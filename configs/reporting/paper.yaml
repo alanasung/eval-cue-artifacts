@@ -1,0 +1,12 @@
+# Single-column paper geometry. Captions are generated from the plotted numbers
+# so a figure and its caption cannot drift apart after a re-run.
+figures:
+  formats: [pdf, svg, png]
+  dpi: 600
+  width_in: 3.3
+  height_in: 2.4
+  palette: colorblind
+  font_family: serif
+latex: true
+markdown: true
+caption_from_numbers: true

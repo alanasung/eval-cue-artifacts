@@ -1,0 +1,12 @@
+# PNG only, no LaTeX. For fast iteration and for CI, where writing three
+# formats of every figure is wasted work.
+figures:
+  formats: [png]
+  dpi: 150
+  width_in: 6.6
+  height_in: 2.6
+  palette: colorblind
+  font_family: sans-serif
+latex: false
+markdown: true
+caption_from_numbers: false

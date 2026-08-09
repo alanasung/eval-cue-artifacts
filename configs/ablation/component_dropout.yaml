@@ -1,0 +1,6 @@
+# Leave-one-out over the components of the pipeline, feeding the loud-versus-
+# silent failure analysis. Each named arm removes exactly one component so the
+# marginal-value attribution stays interpretable.
+enabled: [drop_context, drop_internal_signal, drop_calibration, drop_judge]
+control_arms: [shuffled_label]
+n_seeds: 5

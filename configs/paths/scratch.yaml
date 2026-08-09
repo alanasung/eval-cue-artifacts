@@ -1,0 +1,9 @@
+# Writes everything under a single throwaway tree. Used by the smoke targets and
+# by anyone who wants to run the pilot without touching a populated cache.
+root: .
+data: data
+cache: .cache/scratch
+runs: .scratch/runs
+results: .scratch/results
+figures: .scratch/results/figures
+tables: .scratch/results/tables

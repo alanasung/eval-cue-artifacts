@@ -1,0 +1,17 @@
+# @package _global_
+#
+# The base every preset in this directory inherits. It exists, and
+# tests/test_config_composition.py composes every preset to keep it that way:
+# a defaults list pointing at a missing base fails only at run time, months
+# later, on the machine you cannot debug.
+#
+# `stages: []` is deliberate. The base experiment computes nothing, so composing
+# it is a pure configuration exercise and `make smoke` works on a fresh clone
+# with no data and no downloaded weights.
+
+experiment:
+  name: base
+  task_id: E00
+  description: Shared base for every experiment preset. Runs no stages.
+  stages: []
+  tags: [base]

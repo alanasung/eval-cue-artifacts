@@ -1,0 +1,28 @@
+# Root configuration for eval-awareness-hardening.
+#
+# Composition order matters. The typed schema (`base_schema`, registered from
+# src/evalaware/configs/schema.py) comes first so that every key below is
+# validated against a dataclass field: a misspelt `model.dtpye` fails here
+# rather than resolving to None three stages later. Group defaults follow.
+# `_self_` sits before `experiment` so an experiment preset is the last word on
+# any key it touches -- that is what makes `experiment=sweep_layers` able to
+# override `sweep`, `eval`, and `run` in one line.
+#
+# Enum-typed fields take the *member name*, not the value: OmegaConf resolves
+# `DType.FLOAT32` from the string `FLOAT32`. The valid set is discoverable from
+# schema.py rather than from a comment that will drift.
+
+defaults:
+  - base_schema
+  - paths: default
+  - model: qwen0.5b
+  - data: synthetic
+  - cache: default
+  - eval: default
+  - sweep: disabled
+  - ablation: disabled
+  - reporting: default
+  - logging: default
+  - run: pilot
+  - _self_
+  - experiment: base_experiment

@@ -1,0 +1,8 @@
+# Depth sweep: where in the residual stream does the effect live? Every cell is
+# a full (layer, seed) run, so `max_cells` is a guard against a grid that would
+# not finish before the deadline rather than a tuning knob.
+enabled: true
+seeds: [0, 1, 2]
+grid:
+  eval.layers: [[2], [4], [6], [8], [10], [12]]
+max_cells: 32
