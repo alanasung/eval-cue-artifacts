@@ -33,3 +33,10 @@
 
 ## Reconciliation
 Grok PASS_WITH_NOTES on the measurable core. Codex SERIOUS_PROBLEMS remains on live generation / full monitor family / rewrite recollect — recorded as residual scale notes, not missing stages. Domain tests pass (47).
+
+## P5 rigor pass (measured mentor-critical paths)
+
+- Live / measured paths preferred; synthetic remains smoke-only with honesty stamps.
+- Claim gating tightened where proxies previously looked like evidence.
+- Domain tests green without Hub downloads.
+
