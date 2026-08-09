@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 def enrich_items(items, cfg):
     out=[]
     for i,row in enumerate(items):

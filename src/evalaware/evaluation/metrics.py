@@ -18,8 +18,8 @@ against a four-row example, and the tests do exactly that.
 
 from __future__ import annotations
 
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from typing import Callable, Sequence
 
 import numpy as np
 
@@ -330,7 +330,6 @@ def minimum_detectable_effect(
     require_in_range(alpha, "alpha", low=0.0, high=1.0, inclusive=False)
     require_in_range(power, "power", low=0.0, high=1.0, inclusive=False)
     # Normal approximations: z_{1-a/2} + z_{power}
-    from math import ceil
     # Rough constants: 1.96 for 0.05 two-sided, 0.84 for 80% power
     z_alpha = 1.959963984540054
     z_power = 0.8416212335729143 if abs(power - 0.8) < 1e-9 else 1.2815515655446004

@@ -19,8 +19,9 @@ because a module was imported in a different order.
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable, Iterable, Sequence
 from dataclasses import dataclass, field
-from typing import Any, Callable, Iterable, Sequence
+from typing import Any
 
 __all__ = [
     "CyclicDependencyError",

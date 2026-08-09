@@ -19,8 +19,9 @@ in a different experiment.
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable, Iterator, Sequence
 from contextlib import contextmanager
-from typing import Any, Callable, Iterator, Sequence
+from typing import Any
 
 import numpy as np
 import torch

@@ -3,7 +3,7 @@
 **Target project.** Securing alignment evaluations against unverbalized evaluation awareness
 **Mentor.** J Rosser (University of Oxford, Adecco supporting Google DeepMind)
 **Research areas.** Evaluations; Mechanistic interpretability; Behavioral evaluation of LLMs
-**Posting.** https://sparai.org/projects/f26/recFlTiKZFBq3i4GY
+**Related posting.** https://sparai.org/projects/f26/recFlTiKZFBq3i4GY
 
 ## Summary
 
@@ -42,8 +42,6 @@ reportable rather than a dead end.
 
 - The probe can latch onto surface register, formatting or politeness, rather than awareness. Held-out scenario families and a style-matched control set are how that is tested.
 - The rewrite loop can trivially lower the probe by gutting the eval. The construct-validity guard is what makes the loop meaningful, and it must be adversarially checked rather than assumed.
-
-
 
 ## Feasibility
 

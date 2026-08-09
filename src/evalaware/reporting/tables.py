@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import statistics
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 __all__ = ["write_tables", "direction_arrow"]
 

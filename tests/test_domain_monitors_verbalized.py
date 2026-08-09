@@ -1,4 +1,3 @@
-from pathlib import Path
 from evalaware.evalaware.corpora import run_corpora
 from evalaware.evalaware.probe import run_probe
 from evalaware.evalaware.monitors import run_monitors

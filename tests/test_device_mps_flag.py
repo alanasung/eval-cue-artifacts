@@ -1,4 +1,4 @@
-from evalaware.models.device import DeviceInfo, enable_mps_fallback, get_device
+from evalaware.models.device import enable_mps_fallback, get_device
 
 def test_device_info_has_fallback_field():
     info = get_device(None)

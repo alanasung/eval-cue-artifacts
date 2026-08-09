@@ -2,7 +2,6 @@
 from __future__ import annotations
 import importlib
 import pkgutil
-import inspect
 import evalaware as pkg
 
 def test_version():

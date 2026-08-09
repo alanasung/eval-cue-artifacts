@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import json
 import logging
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from ..utils.git import git_sha
 from ..utils.io import save_json
@@ -53,7 +54,7 @@ def flatten_metrics(payload: dict[str, Any], prefix: str = "") -> dict[str, floa
             flat.update(flatten_metrics(value, prefix=f"{name}."))
         elif isinstance(value, bool):
             continue
-        elif isinstance(value, (int, float)):
+        elif isinstance(value, int | float):
             flat[name] = float(value)
     return flat
 

@@ -4,8 +4,7 @@ Context for coding agents working in this repository.
 
 ## What this is
 
-A pilot research implementation of "Closing the Loop on Unverbalized Evaluation Awareness" targeting the SPAR
-Fall 2026 project "Securing alignment evaluations against unverbalized evaluation awareness" (mentor: J Rosser,
+A pilot research implementation of "Closing the Loop on Unverbalized Evaluation Awareness" for the research agenda "Securing alignment evaluations against unverbalized evaluation awareness" (mentor: J Rosser,
 University of Oxford, Adecco supporting Google DeepMind).
 
 ## Hard constraints

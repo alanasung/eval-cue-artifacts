@@ -19,8 +19,9 @@ instrument works before any real model is loaded.
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any, Sequence
+from typing import Any
 
 import numpy as np
 
@@ -142,7 +143,7 @@ class EvaluationHarness:
         components: Sequence[str],
         target: Sequence[float] | np.ndarray,
         gate_true: Sequence[int] | np.ndarray,
-    ) -> "EvaluationHarness":
+    ) -> EvaluationHarness:
         """Build a harness from ``cfg.eval``, ``cfg.run``, and ``cfg.experiment``."""
         eval_cfg = getattr(cfg, "eval", cfg)
         return cls(

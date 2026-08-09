@@ -20,8 +20,9 @@ from __future__ import annotations
 
 import json
 import logging
+from collections.abc import Iterable, Iterator, Mapping
 from pathlib import Path
-from typing import Any, Iterable, Iterator, Mapping
+from typing import Any
 
 from .run_manifest import write_json_atomic
 

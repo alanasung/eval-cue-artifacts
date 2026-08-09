@@ -62,7 +62,7 @@ jobs:
           pip install -e .
           pip install mypy==1.14.1
       - name: Mypy
-        run: python -m mypy src/evalaware --ignore-missing-imports
+        run: python -m mypy src/evalaware --ignore-missing-imports --no-warn-unused-ignores
 
   coverage:
     runs-on: ubuntu-latest

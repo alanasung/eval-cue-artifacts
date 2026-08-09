@@ -21,8 +21,9 @@ parameters, which would otherwise warn on every call.
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Any, Sequence
+from typing import Any
 
 import torch
 

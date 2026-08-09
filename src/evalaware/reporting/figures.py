@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 __all__ = ["PALETTE", "RC_PARAMS", "write_caption", "write_figures"]
 

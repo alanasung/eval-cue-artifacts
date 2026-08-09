@@ -21,8 +21,8 @@ rather than discouraged in a comment.
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Callable, Mapping, Sequence
 
 import numpy as np
 

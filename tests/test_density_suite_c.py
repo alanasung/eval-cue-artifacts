@@ -1,7 +1,6 @@
 """Additional density tests for test:lib ratio on domain-heavy repos."""
 from __future__ import annotations
 import numpy as np
-import pytest
 
 def test_density_c_00():
     from evalaware.evaluation.metrics import accuracy, f1, bootstrap_mean

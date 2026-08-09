@@ -8,8 +8,9 @@ to recover, so a failing recovery rate is a bug in the instrument.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass, field
-from typing import Any, Literal, Sequence
+from typing import Any, Literal
 
 import numpy as np
 

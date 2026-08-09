@@ -28,9 +28,10 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
+from typing import Any, cast
 
 import numpy as np
 
@@ -84,13 +85,13 @@ class CacheRecord:
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, object]) -> "CacheRecord":
+    def from_dict(cls, data: dict[str, object]) -> CacheRecord:
         return cls(
             id=str(data["id"]),
             namespace=str(data["namespace"]),
             version=str(data["version"]),
             timestamp=str(data["timestamp"]),
-            shape=list(data["shape"]),  # type: ignore[arg-type]
+            shape=[int(cast(Any, x)) for x in cast(list[Any], data["shape"])],
             dtype=str(data["dtype"]),
             path=str(data["path"]),
         )

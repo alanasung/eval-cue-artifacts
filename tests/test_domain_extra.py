@@ -5,7 +5,6 @@ from evalaware.evalaware.features import batch_activations, surface_cue_score
 from evalaware.evalaware.verbalized import AWARENESS_PATTERNS, verbalized_aware
 from evalaware.evalaware.inflation import safety_score
 from evalaware.stages import STAGES
-import numpy as np
 
 def test_family_count():
     assert len(FAMILIES) >= 6

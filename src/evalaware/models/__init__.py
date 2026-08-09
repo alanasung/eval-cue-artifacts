@@ -18,7 +18,13 @@ from .device import (
     resolve_device,
     resolve_dtype,
 )
-from .generation import TokenLogprobs, apply_chat_template, generate, sequence_logprob, token_logprobs
+from .generation import (
+    TokenLogprobs,
+    apply_chat_template,
+    generate,
+    sequence_logprob,
+    token_logprobs,
+)
 from .hooks import (
     ActivationCache,
     ablate,

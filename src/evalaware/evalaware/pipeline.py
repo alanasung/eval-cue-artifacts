@@ -7,19 +7,19 @@ import json
 import logging
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 from omegaconf import DictConfig
 
-from ..utils.git import git_sha
-from ..utils.io import ensure_dir, save_json
-from ..data.synthetic import build_synthetic_items
 from ..data.splits import split_items
+from ..data.synthetic import build_synthetic_items
 from ..evaluation.metrics import accuracy, bootstrap_mean, minimum_detectable_effect
 from ..reporting.aggregate import aggregate_results
-from ..reporting.tables import write_tables
 from ..reporting.figures import write_figures
+from ..reporting.tables import write_tables
+from ..utils.git import git_sha
+from ..utils.io import ensure_dir, save_json
 
 logger = logging.getLogger(__name__)
 
@@ -67,9 +67,9 @@ def stage_build_dataset(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
         shuffle=bool(cfg.data.shuffle),
     )
     out = ensure_dir(run_dir / "artifacts" / "dataset")
-    save_json(out / "train.json", bundle.train)
-    save_json(out / "val.json", bundle.val)
-    save_json(out / "test.json", bundle.test)
+    save_json(out / "train.json", cast(Any, bundle.train))
+    save_json(out / "val.json", cast(Any, bundle.val))
+    save_json(out / "test.json", cast(Any, bundle.test))
     payload = _base("build_dataset", cfg, n, **{f"n_{k}": v for k, v in bundle.sizes().items()})
     payload["elapsed_seconds"] = round(time.perf_counter() - started, 4)
     save_json(out / "results.json", payload)
@@ -82,7 +82,7 @@ def stage_collect(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
     train = json.loads((data_dir / "train.json").read_text()) if (data_dir / "train.json").is_file() else build_synthetic_items(64, seed=_seed(cfg))
     features = []
     labels = []
-    for row in train:
+    for row in cast(list[dict[str, Any]], train):
         comps = row.get("components") or {"c0": float(row.get("label", 0))}
         features.append([float(comps.get(k, 0.0)) for k in sorted(comps)])
         labels.append(int(row.get("label", 0)))
@@ -91,12 +91,12 @@ def stage_collect(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
     # Optional model path
     model_note = "numpy_features"
     try:
-        from ..models.loader import load_model
+
         from ..models.hooks import capture
-        import torch
+        from ..models.loader import load_model
         loaded = load_model(cfg)
         # tiny forward on a few prompts if tokenizer works
-        prompts = [str(r.get("prompt", "hello")) for r in train[: min(8, len(train))]]
+        prompts = [str(r.get("prompt", "hello")) for r in cast(list[dict[str, Any]], train)[: min(8, len(train))]]
         tok = loaded.tokenizer
         encoded = tok(prompts, return_tensors="pt", padding=True, truncation=True, max_length=32)
         encoded = {k: v.to(loaded.device) for k, v in encoded.items()}
@@ -138,7 +138,6 @@ def stage_fit(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
     # logistic-style linear probe via least squares on [0,1]
     if x.ndim == 1:
         x = x.reshape(-1, 1)
-    rng = np.random.default_rng(_seed(cfg))
     # simple ridge
     xt = np.concatenate([x, np.ones((len(x), 1))], axis=1)
     lam = 1e-2

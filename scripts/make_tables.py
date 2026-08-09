@@ -66,8 +66,8 @@ def row_n(row: dict) -> int:
     """Total example count for a row, however the payload spelled it."""
     value = row.get("n")
     if isinstance(value, dict):
-        return int(sum(int(item) for item in value.values() if isinstance(item, (int, float))))
-    return int(value) if isinstance(value, (int, float)) else 0
+        return int(sum(int(item) for item in value.values() if isinstance(item, int | float)))
+    return int(value) if isinstance(value, int | float) else 0
 
 
 def collect_metrics(rows: list[dict], requested: list[str] | None) -> list[str]:

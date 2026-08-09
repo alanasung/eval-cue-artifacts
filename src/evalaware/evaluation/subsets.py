@@ -20,8 +20,9 @@ a job that appears to hang.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from itertools import combinations
-from typing import Iterable, Literal
+from typing import Literal
 
 from .protocols import ComponentSet, as_component_set
 

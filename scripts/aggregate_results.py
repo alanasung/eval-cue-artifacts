@@ -71,7 +71,7 @@ def flatten_metrics(payload: dict, prefix: str = "") -> dict[str, float]:
             flat.update(flatten_metrics(value, prefix=f"{name}."))
         elif isinstance(value, bool):
             continue
-        elif isinstance(value, (int, float)):
+        elif isinstance(value, int | float):
             flat[name] = float(value)
     return flat
 

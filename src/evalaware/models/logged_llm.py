@@ -19,8 +19,9 @@ from __future__ import annotations
 
 import logging
 import time
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 
 from ..evaluation.protocols import LLMBackend
 from ..utils.io import append_jsonl, count_jsonl

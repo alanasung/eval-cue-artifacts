@@ -224,7 +224,7 @@ resume, safe-name validation, and hard errors on version mismatch.
 
 Mentor(s): J Rosser
 Affiliation(s): University of Oxford, Adecco supporting Google DeepMind
-SPAR posting: https://sparai.org/projects/f26/recFlTiKZFBq3i4GY
+Related posting: https://sparai.org/projects/f26/recFlTiKZFBq3i4GY
 
 ## 21. Glossary
 

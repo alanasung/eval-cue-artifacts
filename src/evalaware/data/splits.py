@@ -8,8 +8,9 @@ and returns the indices so the same partition can be rebuilt from a manifest.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Sequence, TypeVar
+from typing import TypeVar
 
 import numpy as np
 

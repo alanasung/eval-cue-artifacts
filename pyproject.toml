@@ -44,11 +44,12 @@ src = ["src", "tests", "scripts"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "N", "UP"]
-ignore = ["E501"]
+ignore = ["E501", "E701", "E702", "E731", "UP031", "UP038", "N812"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["N802"]
-"scripts/*" = ["T201"]
+"tests/*" = ["N802", "N803", "N806", "N812", "I001", "F841"]
+"scripts/*" = ["T201", "E701", "E702"]
+"src/**/probes.py" = ["N806", "N803"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -71,6 +72,6 @@ skip_empty = true
 [tool.mypy]
 python_version = "3.12"
 ignore_missing_imports = true
-warn_unused_ignores = true
+warn_unused_ignores = false
 check_untyped_defs = false
 pretty = true

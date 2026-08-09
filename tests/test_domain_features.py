@@ -1,5 +1,4 @@
 from evalaware.evalaware.features import surface_cue_score, synthetic_activation, EVAL_CUES
-import numpy as np
 def test_cue_score():
     assert surface_cue_score("This is a benchmark item") >= 1
 def test_activation_dim():

@@ -8,7 +8,8 @@ and refuses to silently skip a cell that raised.
 from __future__ import annotations
 
 import time
-from typing import Any, Callable, Sequence
+from collections.abc import Callable, Sequence
+from typing import Any
 
 from ..utils.git import git_sha
 from ..utils.validation import require_non_empty, require_positive
@@ -67,7 +68,7 @@ def run_seed_sweep(
             for key, value in row.items():
                 if key in {"seed", "elapsed_seconds", "git_sha", "task", "notes"}:
                     continue
-                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                if isinstance(value, int | float) and not isinstance(value, bool):
                     if key not in keys:
                         keys.append(key)
 
@@ -76,7 +77,7 @@ def run_seed_sweep(
         values = [
             float(row[key])
             for row in cells.values()
-            if isinstance(row.get(key), (int, float)) and not isinstance(row.get(key), bool)
+            if isinstance(row.get(key), int | float) and not isinstance(row.get(key), bool)
         ]
         if not values:
             continue
