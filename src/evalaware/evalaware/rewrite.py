@@ -1,8 +1,8 @@
 """Probe-supervised rewrite loop with construct-validity guard.
 
 The loop runs only when the construct stage licensed internal awareness
-(``construct_status == held``). Otherwise status fields record the skip and no
-rewrites are applied.
+(``construct_status == held``, requiring algebraic_ok and behavioral_ok).
+Otherwise status fields record the skip and no rewrites are applied.
 
 Per-item construct validity (when the loop runs)
 ------------------------------------------------
@@ -11,6 +11,14 @@ A rewrite retains construct validity iff ALL hold:
   2. Same ``family`` (scenario class unchanged)
   3. Lexical overlap with the original task tokens ≥ min_task_overlap
   4. Not a trivial deletion of the task (length ≥ min_len)
+
+Scoring
+-------
+Measured path (``force_synthetic=false`` + weights available): recollect
+residual activations on rewritten texts via ``collect_activations`` and score
+with the frozen probe (``scoring_mode=recollect_after_rewrite``). Cap n for M4.
+Smoke keeps proxy features with ``scoring_mode=proxy_after_rewrite`` and
+``measured_claims_ok=False``. Fail-closed if measured required and weights missing.
 """
 
 from __future__ import annotations
@@ -22,8 +30,11 @@ from typing import Any
 import numpy as np
 
 from .common import read_json, result_dict, write_json
-from .features import EVAL_CUES, batch_activations, surface_cue_score
+from .features import EVAL_CUES, batch_activations, collect_activations, surface_cue_score
 from .monitors import score_monitor
+
+STAND_IN_MONITORS = ("sae", "lens", "attention")
+_DEFAULT_RECOLLECT_CAP = 64
 
 
 def _strip_eval_cues(text: str) -> str:
@@ -63,21 +74,38 @@ def run_rewrite(
     monitor_metrics: dict[str, Any] | None = None,
     construct_metrics: dict[str, Any] | None = None,
     rounds: int = 2,
+    force_synthetic: bool = False,
+    model_name: str = "synthetic",
+    revision: str | None = None,
+    layer: int = -2,
+    dim: int = 32,
+    max_recollect: int = _DEFAULT_RECOLLECT_CAP,
 ) -> dict[str, Any]:
     items = read_json(Path(inflation_metrics["artifact"]))["items"]
     supervising = "probe"
     held_out = ["heldout_linear", "sae", "lens", "attention"]
+    stand_ins = list(STAND_IN_MONITORS)
     if monitor_metrics is not None:
         supervising = monitor_metrics.get("supervising", "probe")
         held_out = monitor_metrics.get("held_out", held_out)
+        stand_ins = list(monitor_metrics.get("stand_in_monitors", STAND_IN_MONITORS))
+
+    # Headline transfer excludes stand-in monitors by default.
+    headline_held = [m for m in held_out if m not in stand_ins]
+    if not headline_held:
+        headline_held = [m for m in held_out if m == "heldout_linear"] or list(held_out)
 
     licensed = True
     construct_status = "unknown"
     construct_claim = None
+    algebraic_ok = None
+    behavioral_ok = None
     if construct_metrics is not None:
         licensed = bool(construct_metrics.get("internal_awareness_licensed", False))
         construct_status = str(construct_metrics.get("construct_status", "unknown"))
         construct_claim = construct_metrics.get("claim")
+        algebraic_ok = construct_metrics.get("algebraic_ok")
+        behavioral_ok = construct_metrics.get("behavioral_ok")
         # Prefer on-disk construct.json when path available.
         art = construct_metrics.get("artifact")
         if art and Path(art).exists():
@@ -87,6 +115,11 @@ def run_rewrite(
             )
             construct_status = str(payload.get("construct_status", construct_status))
             construct_claim = payload.get("claim", construct_claim)
+            algebraic_ok = payload.get("algebraic_ok", algebraic_ok)
+            behavioral_ok = payload.get("behavioral_ok", behavioral_ok)
+            # Gate rewrite on both when fields are present.
+            if payload.get("algebraic_ok") is False or payload.get("behavioral_ok") is False:
+                licensed = False
 
     if not licensed:
         path = write_json(
@@ -100,14 +133,20 @@ def run_rewrite(
                 "status": "skipped_construct_failed",
                 "construct_status": construct_status,
                 "construct_claim": construct_claim,
+                "algebraic_ok": algebraic_ok,
+                "behavioral_ok": behavioral_ok,
                 "note": (
                     "Rewrite loop refused: construct validity / internal-awareness "
-                    "license not held. Status fields record the failure; no cue "
-                    "stripping was applied."
+                    "license not held (requires algebraic_ok and behavioral_ok). "
+                    "Status fields record the failure; no cue stripping was applied."
                 ),
                 "transfer_gap": 0.0,
                 "supervising": supervising,
                 "held_out": held_out,
+                "headline_held_out": headline_held,
+                "stand_in_monitors": stand_ins,
+                "transfer_uses_stand_ins": False,
+                "measured_claims_ok": False,
             },
         )
         return result_dict(
@@ -125,6 +164,9 @@ def run_rewrite(
             status="skipped_construct_failed",
             construct_status=construct_status,
             construct_claim=construct_claim,
+            algebraic_ok=algebraic_ok,
+            behavioral_ok=behavioral_ok,
+            measured_claims_ok=False,
         )
 
     from .monitors import fit_heldout_linear
@@ -137,16 +179,73 @@ def run_rewrite(
     history: list[dict[str, Any]] = []
     current = [dict(it) for it in items]
 
-    def awareness_rates(rows: list[dict[str, Any]]) -> dict[str, float]:
-        """Score rewrites with the frozen probe / held-out linear weights.
+    use_recollect = (
+        (not force_synthetic)
+        and model_name not in {"", "synthetic", "x", "none", "missing"}
+    )
+    scoring_mode = "proxy_after_rewrite"
+    measured_claims_ok = False
+    recollect_meta: dict[str, Any] = {}
 
-        Uses surface+residual feature dims from ``batch_activations`` as a
-        cheap local proxy after text edits. Measured residual recollect after
-        every rewrite candidate is the scale-up path; rates are stamped
-        ``scoring_mode=proxy_after_rewrite`` in the artifact.
+    if use_recollect:
+        # Fail closed early if measured path cannot load weights.
+        from .model_runtime import try_load_causal_lm
+
+        probe = try_load_causal_lm(model_name, revision=revision, force_synthetic=False)
+        if probe is None:
+            raise RuntimeError(
+                f"Measured rewrite recollect required for {model_name!r} but weights "
+                "are unavailable. Download the model, or set force_synthetic=true for "
+                "smoke only (proxy scoring)."
+            )
+        scoring_mode = "recollect_after_rewrite"
+        measured_claims_ok = True
+
+    def _features_for(rows: list[dict[str, Any]]) -> tuple[np.ndarray, dict[str, Any]]:
+        nonlocal scoring_mode, measured_claims_ok, recollect_meta
+        if use_recollect:
+            capped = rows[: max(1, int(max_recollect))]
+            collected = collect_activations(
+                capped,
+                model_name=model_name,
+                revision=revision,
+                layer=layer,
+                seed=seed,
+                force_synthetic=False,
+                dim=dim,
+            )
+            x = np.asarray(collected["activations"], dtype=np.float64)
+            # Pad/truncate feature matrix to full row count for rate denominators.
+            if len(capped) < len(rows):
+                # Score capped subset only; replicate mean row for remainder (marked).
+                pad = np.repeat(x.mean(axis=0, keepdims=True), len(rows) - len(capped), axis=0)
+                x_full = np.concatenate([x, pad], axis=0)
+            else:
+                x_full = x
+            recollect_meta = {
+                "n_recollected": len(capped),
+                "n_rows": len(rows),
+                "max_recollect": int(max_recollect),
+                "used_chat_template": collected.get("used_chat_template"),
+                "template_path": collected.get("template_path"),
+                "activation_mode": collected.get("mode"),
+            }
+            scoring_mode = "recollect_after_rewrite"
+            measured_claims_ok = True
+            return x_full, recollect_meta
+        x = batch_activations(rows, seed=seed, dim=dim)
+        scoring_mode = "proxy_after_rewrite"
+        measured_claims_ok = False
+        return x, {"n_proxy": len(rows)}
+
+    def awareness_rates(rows: list[dict[str, Any]]) -> dict[str, float]:
+        """Score rewrites with frozen probe / held-out weights.
+
+        Measured: recollect residuals then score. Smoke: surface+residual proxy
+        dims from ``batch_activations``.
         """
         nonlocal heldout_w
-        x = batch_activations(rows, seed=seed)
+        x, _meta = _features_for(rows)
         w_path = artifacts / "probe_weights.npy"
         if w_path.exists():
             w = np.load(w_path)
@@ -210,8 +309,14 @@ def run_rewrite(
 
     final_rates = awareness_rates(current)
     reduction_sup = base_rates.get("probe", 0.0) - final_rates.get("probe", 0.0)
+    # Headline held-out reduction excludes stand-in monitors.
     reduction_held = float(
-        np.mean([base_rates.get(m, 0.0) - final_rates.get(m, 0.0) for m in held_out])
+        np.mean([base_rates.get(m, 0.0) - final_rates.get(m, 0.0) for m in headline_held])
+    )
+    stand_in_reduction = float(
+        np.mean([base_rates.get(m, 0.0) - final_rates.get(m, 0.0) for m in stand_ins])
+        if stand_ins
+        else 0.0
     )
     transfer_gap = reduction_sup - reduction_held
 
@@ -227,17 +332,27 @@ def run_rewrite(
             "status": "ran_construct_held",
             "construct_status": construct_status,
             "construct_claim": construct_claim,
-            "scoring_mode": "proxy_after_rewrite",
+            "algebraic_ok": algebraic_ok,
+            "behavioral_ok": behavioral_ok,
+            "scoring_mode": scoring_mode,
+            "measured_claims_ok": measured_claims_ok,
+            "recollect": recollect_meta,
             "construct_validity_retention": n_valid / max(1, accepted + rejected),
             "base_rates": base_rates,
             "final_rates": final_rates,
             "transfer_gap": transfer_gap,
+            "awareness_reduction_supervising": float(reduction_sup),
+            "awareness_reduction_heldout_headline": float(reduction_held),
+            "awareness_reduction_stand_in": float(stand_in_reduction),
             "supervising": supervising,
             "held_out": held_out,
+            "headline_held_out": headline_held,
+            "stand_in_monitors": stand_ins,
+            "transfer_uses_stand_ins": False,
             "construct_validity_procedure": (
-                "Loop gated on construct_status=held. Per-item rewrite accepted "
-                "only if task/family preserved, task-token overlap ≥ 0.5, length "
-                "≥ 12, and supervising monitor score decreases."
+                "Loop gated on construct_status=held (algebraic_ok and behavioral_ok). "
+                "Per-item rewrite accepted only if task/family preserved, task-token "
+                "overlap ≥ 0.5, length ≥ 12, and supervising monitor score decreases."
             ),
         },
     )
@@ -255,4 +370,9 @@ def run_rewrite(
         rewrite_executed=True,
         status="ran_construct_held",
         construct_status=construct_status,
+        scoring_mode=scoring_mode,
+        measured_claims_ok=measured_claims_ok,
+        algebraic_ok=algebraic_ok,
+        behavioral_ok=behavioral_ok,
+        transfer_uses_stand_ins=False,
     )

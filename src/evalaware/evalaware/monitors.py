@@ -134,20 +134,25 @@ def run_monitors(
         scores[name] = s.tolist()
         aurocs[name] = float(auroc(y.tolist(), s.tolist()))
 
+    headline_held = [m for m in held_out if m not in stand_ins]
     path = dump_json_text(
         artifacts / "monitors.json",
         {
             "supervising": supervising,
             "held_out": held_out,
+            "headline_held_out": headline_held,
             "auroc": aurocs,
             "scores": scores,
             "real_monitors": list(real_monitors),
             "stand_in_monitors": list(stand_ins),
+            "stand_in": {m: True for m in stand_ins},
+            "transfer_uses_stand_ins": False,
             "procedure": (
-                "Supervising monitor alone may be fooled by rewrites. Transfer is "
-                "measured as awareness reduction on supervising minus reduction on "
-                "the held-out panel mean. heldout_linear is a real disjoint-fold "
-                "linear monitor; sae/lens/attention remain labeled stand-ins."
+                "Supervising monitor alone may be fooled by rewrites. Transfer "
+                "headline is awareness reduction on supervising minus reduction on "
+                "real held-out monitors only (default: heldout_linear). "
+                "sae/lens/attention remain labeled stand-ins and are excluded from "
+                "the transfer headline by default."
             ),
         },
     )
@@ -158,7 +163,9 @@ def run_monitors(
         artifact=str(path),
         supervising=supervising,
         held_out=held_out,
+        headline_held_out=headline_held,
         auroc=aurocs,
         real_monitors=list(real_monitors),
         stand_in_monitors=list(stand_ins),
+        transfer_uses_stand_ins=False,
     )

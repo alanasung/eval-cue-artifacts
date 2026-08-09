@@ -40,3 +40,17 @@ Grok PASS_WITH_NOTES on the measurable core. Codex SERIOUS_PROBLEMS remains on l
 - Claim gating tightened where proxies previously looked like evidence.
 - Domain tests green without Hub downloads.
 
+## P6 rewrite recollect + construct behavioral + chat template
+
+| Fix | Status |
+|---|---|
+| Rewrite recollects measured residuals when not smoke (`scoring_mode=recollect_after_rewrite`) | OK (M4 cap default 64) |
+| Smoke keeps `proxy_after_rewrite` + `measured_claims_ok=False` | OK |
+| Fail-closed when measured recollect required and weights missing | OK |
+| Construct `algebraic_ok` + `behavioral_ok`; `held` requires both | OK (held-out monitor agreement under ablation) |
+| Activation collect uses chat template when available; stamps `used_chat_template` / `template_path` | OK |
+| Stand-in monitors excluded from transfer headline by default | OK |
+| Hub-free domain P6 tests | OK (`test_domain_p6_rewrite_construct.py`) |
+
+Residual: generation-time residual steer / live CoT scoring beyond simulated rubrics; SAE/lens/attention remain stand-ins.
+

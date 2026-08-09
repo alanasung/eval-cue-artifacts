@@ -94,6 +94,8 @@ def run_probe(
             "revision": collected.get("revision"),
             "notes": collected.get("notes", []),
             "fallback_reason": collected.get("fallback_reason"),
+            "used_chat_template": collected.get("used_chat_template"),
+            "template_path": collected.get("template_path"),
         },
     )
     all_scores = _score(w, x_all)

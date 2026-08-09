@@ -97,6 +97,8 @@ def collect_activations(
             "revision": revision,
             "fallback_reason": "force_synthetic=True",
             "notes": ["synthetic activations for smoke/plumbing only"],
+            "used_chat_template": False,
+            "template_path": "synthetic",
         }
 
     runtime = try_load_causal_lm(
@@ -111,6 +113,8 @@ def collect_activations(
 
     import torch
 
+    from evalaware.models.generation import apply_chat_template
+
     model = runtime.model
     tok = runtime.tokenizer
     blocks = residual_blocks(model)
@@ -118,6 +122,12 @@ def collect_activations(
     layer_idx = layer if layer >= 0 else n_layers + layer
     if not (0 <= layer_idx < n_layers):
         raise ValueError(f"layer {layer} out of range for {n_layers} blocks")
+
+    raw_texts = [str(it["text"]) for it in items]
+    formatted, template_path = apply_chat_template(
+        tok, raw_texts, use_chat_template=True
+    )
+    used_chat_template = template_path == "chat_template"
 
     captured: list[np.ndarray] = []
 
@@ -129,8 +139,8 @@ def collect_activations(
     handle = blocks[layer_idx].register_forward_hook(_hook)
     try:
         with torch.no_grad():
-            for it in items:
-                enc = tok(it["text"], return_tensors="pt", truncation=True, max_length=256)
+            for text in formatted:
+                enc = tok(text, return_tensors="pt", truncation=True, max_length=256)
                 enc = {k: v.to(runtime.device) for k, v in enc.items()}
                 model(**enc)
                 if steer != 0.0 and captured:
@@ -151,4 +161,6 @@ def collect_activations(
         "model_name": model_name,
         "revision": runtime.revision,
         "notes": list(runtime.notes),
+        "used_chat_template": used_chat_template,
+        "template_path": template_path,
     }

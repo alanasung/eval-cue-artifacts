@@ -9,6 +9,8 @@ when ALL hold:
   2. causal intervention along the probe direction moves scores as predicted
   3. label-ablation control collapses (shuffled-label probe AUROC ≈ chance)
   4. feature-scramble control collapses relative to the real probe
+  5. non-algebraic behavioral check: held-out monitor agrees under intervention
+     (``behavioral_ok``); ``construct_status=held`` requires algebraic + behavioral
 """
 
 from __future__ import annotations
@@ -21,6 +23,7 @@ import numpy as np
 from ..evaluation.metrics import auroc
 from .common import dump_json_text, read_json, result_dict
 from .features import EVAL_CUES, collect_activations, surface_cue_score
+from .monitors import fit_heldout_linear
 
 
 def _text_features(texts: list[str]) -> np.ndarray:
@@ -41,6 +44,39 @@ def _fit_ridge(x: np.ndarray, y: np.ndarray, l2: float = 1.0) -> np.ndarray:
 def _score(w: np.ndarray, x: np.ndarray) -> np.ndarray:
     xb = np.concatenate([x, np.ones((x.shape[0], 1))], axis=1)
     return xb @ w
+
+
+def _behavioral_heldout_agreement(
+    base: np.ndarray,
+    ablated: np.ndarray,
+    y: np.ndarray,
+    train_mask: np.ndarray,
+    *,
+    seed: int,
+) -> tuple[bool, dict[str, Any]]:
+    """Non-algebraic check: a held-out linear monitor must also drop under ablation.
+
+    Distinct from re-reading the supervising probe on steered activations — uses a
+    disjoint-fold monitor class. Tiny-n / smoke-safe; no Hub required.
+    """
+    heldout_w = fit_heldout_linear(base, y, train_mask=train_mask, seed=seed + 3)
+    eval_idx = np.where(y)[0]
+    if len(eval_idx) == 0:
+        eval_idx = np.arange(len(y))
+    hb = _score(heldout_w, base)
+    ha = _score(heldout_w, ablated)
+    drop = float(hb[eval_idx].mean() - ha[eval_idx].mean())
+    ok = bool(drop > 1e-6)
+    return ok, {
+        "mean_heldout_base_eval": float(hb[eval_idx].mean()),
+        "mean_heldout_ablated_eval": float(ha[eval_idx].mean()),
+        "heldout_drop": drop,
+        "passes": ok,
+        "procedure": (
+            "Fit heldout_linear on a disjoint train fold; require ablation along "
+            "the probe direction to decrease mean held-out scores on eval items."
+        ),
+    }
 
 
 def run_construct(
@@ -127,13 +163,20 @@ def run_construct(
     scramble_auc = float(auroc(y_lab.tolist(), scr_scores.tolist()))
     scramble_ok = bool(scramble_auc + 0.05 < probe_auc)
 
-    checks = {
+    # --- behavioral / non-algebraic: held-out monitor agreement under intervention ---
+    behavioral_ok, behavioral_detail = _behavioral_heldout_agreement(
+        base, ablated, y, train_mask, seed=seed
+    )
+
+    algebraic_checks = {
         "margin_ok": bool(margin > margin_min),
         "causal_ok": causal_ok,
         "label_ablation_ok": label_ablation_ok,
         "scramble_ok": scramble_ok,
     }
-    internal_claim_licensed = bool(all(checks.values()))
+    algebraic_ok = bool(all(algebraic_checks.values()))
+    checks = {**algebraic_checks, "behavioral_ok": behavioral_ok}
+    internal_claim_licensed = bool(algebraic_ok and behavioral_ok)
     if internal_claim_licensed:
         claim = "internal_awareness_licensed"
         construct_status = "held"
@@ -150,6 +193,8 @@ def run_construct(
             "margin_probe_minus_text": margin,
             "margin_min": margin_min,
             "construct_status": construct_status,
+            "algebraic_ok": algebraic_ok,
+            "behavioral_ok": behavioral_ok,
             "checks": checks,
             "causal": {
                 "mean_score_base_eval": float(base_s[eval_idx].mean()),
@@ -162,6 +207,7 @@ def run_construct(
                     "increase mean probe score on eval-labeled items."
                 ),
             },
+            "behavioral": behavioral_detail,
             "label_ablation": {
                 "auroc_shuffled_labels": label_ablation_auc,
                 "passes": label_ablation_ok,
@@ -182,8 +228,10 @@ def run_construct(
             "policy": (
                 "Text-classifier AUROC is a baseline for evaluation-like text, not "
                 "awareness evidence. Internal awareness requires positive margin, "
-                "causal intervention success, label-ablation collapse, and "
-                "feature-scramble collapse. Rewrite loop runs only when construct_status=held."
+                "causal intervention success, label-ablation collapse, "
+                "feature-scramble collapse, and held-out monitor agreement under "
+                "intervention (behavioral_ok). Rewrite loop runs only when "
+                "construct_status=held (algebraic_ok and behavioral_ok)."
             ),
         },
     )
@@ -198,6 +246,8 @@ def run_construct(
         causal_steering_ok=causal_ok,
         label_ablation_ok=label_ablation_ok,
         scramble_ok=scramble_ok,
+        algebraic_ok=algebraic_ok,
+        behavioral_ok=behavioral_ok,
         construct_status=construct_status,
         internal_awareness_licensed=internal_claim_licensed,
         claim=claim,

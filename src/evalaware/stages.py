@@ -147,8 +147,16 @@ def rewrite(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
             == "internal_awareness_licensed",
             "construct_status": construct_payload.get("construct_status"),
             "claim": construct_payload.get("claim"),
+            "algebraic_ok": construct_payload.get("algebraic_ok"),
+            "behavioral_ok": construct_payload.get("behavioral_ok"),
         },
         rounds=int(cfg_param(cfg, "rewrite_rounds", 2) or 2),
+        force_synthetic=_force_synthetic(cfg),
+        model_name=_model_name(cfg),
+        revision=_revision(cfg),
+        layer=int(cfg_param(cfg, "probe_layer", -2) or -2),
+        dim=int(cfg_param(cfg, "activation_dim", 32) or 32),
+        max_recollect=int(cfg_param(cfg, "rewrite_recollect_cap", 64) or 64),
     )
 
 
