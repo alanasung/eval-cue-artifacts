@@ -18,7 +18,7 @@ touches MPS is misleading. Non-torch work runs on CPU even when
 
 - Pilot target: Apple M4 with 16 GiB unified memory.
 - On MPS, `PYTORCH_ENABLE_MPS_FALLBACK=1` is set explicitly and recorded as
-  `mps_fallback_enabled` in `DeviceInfo.to_dict()`.
+  `mps_fallback_enabled` in `DeviceInfo.to_dict`.
 - `bfloat16` is downgraded to `float16` on MPS with a logged warning.
 - There is no deterministic-algorithms mode on MPS; small numeric drift between
   runs is expected.

@@ -4,8 +4,7 @@ Context for coding agents working in this repository.
 
 ## What this is
 
-A pilot research implementation of "Closing the Loop on Unverbalized Evaluation Awareness" for the research agenda "Securing alignment evaluations against unverbalized evaluation awareness" (mentor: J Rosser,
-University of Oxford, Adecco supporting Google DeepMind).
+Research implementation of "Hardening Evaluations Against Unverbalized Awareness".
 
 ## Hard constraints
 
@@ -21,7 +20,7 @@ University of Oxford, Adecco supporting Google DeepMind).
 
 Implement the stages in `src/evalaware/stages.py`. The signatures,
 dependency edges, and docstring contracts are fixed; they encode an experiment
-design that was checked against the mentor's posting before implementation
+design that was checked against the motivating posting before implementation
 started. Do not renegotiate them. If a contract is genuinely wrong, change it in
 `docs/EXPERIMENT_PLAN.md` first and explain why.
 

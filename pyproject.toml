@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "evalaware"
 version = "0.1.0"
-description = "Train a probe for 'this is a test', then let it referee an automated rewrite loop that makes evaluations harder to recognize."
+description = "White-box detection and rewrite of unverbalized eval awareness."
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 license = { text = "MIT" }
-authors = [{ name = "J Rosser" }]
+authors = [{ name = "Alana Sung" }]
 dependencies = [
   "torch==2.6.0",
   "transformers==4.48.0",

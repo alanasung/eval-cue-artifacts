@@ -1,18 +1,15 @@
 <p align="center">
-  <h1 align="center">Closing the Loop on Unverbalized Evaluation Awareness</h1>
-  <p align="center"><strong>Train a probe for 'this is a test', then let it referee an automated rewrite loop that makes evaluations harder to recognize.</strong></p>
+  <h1 align="center">Hardening Evaluations Against Unverbalized Awareness</h1>
+  <p align="center"><strong>Probe for silent evaluation awareness, then supervise a rewrite loop that preserves construct validity.</strong></p>
   </p>
 
 ---
 
 ## Overview
 
-This repository implements the pilot and full experimental profiles for
-**Closing the Loop on Unverbalized Evaluation Awareness**. Config, caching, hooks, metrics, ablations, reporting, and CI are built for reproducible local pilots on small open-weight models.
+This repository implements experimental profiles for **Hardening Evaluations Against Unverbalized Awareness**. Config, caching, hooks, metrics, ablations, reporting, and CI are built for reproducible local pilots on small open-weight models.
 
 Hypothesis (one line): Verbalized evaluation awareness undercounts real awareness. A linear probe will fire on scenarios the model never flags aloud, safety scores will be measurably inflated on high-probe scenarios, and an automated rewrite loop supervised by the probe can lower probe-detected awareness while holding the scenario's construct validity fixed.
-
-Mentors: J Rosser (University of Oxford, Adecco supporting Google DeepMind).
 
 ## Motivation
 
@@ -89,13 +86,12 @@ registry and must pass the harness-validation script before any measured claim.
 ## Citation
 
 ```bibtex
-@misc{evalaware_pilot,
-  title        = {Closing the Loop on Unverbalized Evaluation Awareness},
-  author       = {J Rosser},
+@misc{eval_awareness_pilot,
+  title        = {Hardening Evaluations Against Unverbalized Awareness},
+  author       = {Alana Sung},
   year         = {2026},
-  howpublished = {Research pilot},
-  note         = {Train a probe for 'this is a test', then let it referee an automated rewrite loop that makes evaluations harder to recognize.},
-  }
+  howpublished = {Technical report},
+}
 ```
 
 ## License

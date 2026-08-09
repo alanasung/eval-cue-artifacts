@@ -1,9 +1,7 @@
-# Proposal: Closing the Loop on Unverbalized Evaluation Awareness
+# Hardening Evaluations Against Unverbalized Awareness
 
 **Target project.** Securing alignment evaluations against unverbalized evaluation awareness
-**Mentor.** J Rosser (University of Oxford, Adecco supporting Google DeepMind)
 **Research areas.** Evaluations; Mechanistic interpretability; Behavioral evaluation of LLMs
-**Related posting.** https://sparai.org/projects/f26/recFlTiKZFBq3i4GY
 
 ## Summary
 
@@ -53,7 +51,6 @@ real GPU is available, so the reduction in scale is explicit rather than hidden.
 
 ## Relationship to the posting
 
-This proposal was checked against the mentor's verbatim posting by an
-independent model before implementation began. That check, the drift it found,
+This proposal was independent model before implementation began. That check, the drift it found,
 and the revisions made in response are recorded in
 [docs/ALIGNMENT.md](ALIGNMENT.md).

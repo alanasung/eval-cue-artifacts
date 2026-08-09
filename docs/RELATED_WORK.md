@@ -1,7 +1,6 @@
 # Related work
 
-This note situates **Closing the Loop on Unverbalized Evaluation Awareness** against the mentor-linked literature for
-[Securing alignment evaluations against unverbalized evaluation awareness](https://sparai.org/projects/f26/recFlTiKZFBq3i4GY).
+This note situates **Hardening Evaluations Against Unverbalized Awareness** against related literature.
 
 ## Positioning
 
@@ -25,7 +24,7 @@ is written.
 
 ### Slot A — Primary motivating paper
 
-Summary of the mentor's main citation and the exact claim this repo tests.
+Summary of the main related citation and the exact claim this repo tests.
 
 ### Slot B — Closest prior codebase
 
@@ -44,11 +43,6 @@ Shortcut learning, eval awareness, circular labels, underpowered nulls.
 
 Where this design intentionally diverges from common practice, with the
 falsification condition.
-
-## Mentors and affiliations
-
-- Mentor(s): J Rosser
-- Affiliation(s): University of Oxford, Adecco supporting Google DeepMind
 
 ## Bibliography placeholders
 

@@ -80,8 +80,8 @@ an explicit string field when a stable SHA is not yet recorded.
 
 | Policy | Behaviour |
 |---|---|
-| MPS fallback | `PYTORCH_ENABLE_MPS_FALLBACK=1` via `enable_mps_fallback()` |
-| Manifest | `mps_fallback_enabled` in `DeviceInfo.to_dict()` |
+| MPS fallback | `PYTORCH_ENABLE_MPS_FALLBACK=1` via `enable_mps_fallback` |
+| Manifest | `mps_fallback_enabled` in `DeviceInfo.to_dict` |
 | bfloat16 on MPS | Downgrade to float16 + warning |
 | CUDA missing | `HardwareError`, no silent CPU fallback |
 | Non-torch work | CPU only (numpy/sklearn/pandas/matplotlib) |
@@ -146,7 +146,7 @@ Each returns a structured dict with `task`, `seed`, `git_sha`, `elapsed_seconds`
 
 ## 13. Artifact cache
 
-Version-pinned store with atomic writes, append-only `manifest.jsonl`, `has()`
+Version-pinned store with atomic writes, append-only `manifest.jsonl`, `has`
 resume, safe-name validation, and hard errors on version mismatch.
 
 ## 14. Reporting contract
@@ -219,12 +219,6 @@ resume, safe-name validation, and hard errors on version mismatch.
 | Hook leakage | contextmanager `finally` removals |
 | Silent CPU fallback | `HardwareError` on missing accelerator |
 | Synthetic reported as measured | `is_synthetic` + CONTRIBUTING honesty rule |
-
-## 20. Mentors and affiliation
-
-Mentor(s): J Rosser
-Affiliation(s): University of Oxford, Adecco supporting Google DeepMind
-Related posting: https://sparai.org/projects/f26/recFlTiKZFBq3i4GY
 
 ## 21. Glossary
 
