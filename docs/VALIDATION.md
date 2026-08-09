@@ -67,3 +67,24 @@ Residual: generation-time residual steer / live CoT scoring beyond simulated rub
 
 Residual: full residual recollect on every rewrite candidate (cap remains); SAE/lens/attention stand-ins; generation-time steer.
 
+## Codex problem-statement fit
+
+Model: `gpt-5.6-sol` · gates: `match` + `validate` · 2026-08-09
+Artifacts: `orchestration/out/match/eval-awareness-hardening.md`, `orchestration/out/validate/eval-awareness-hardening.md`
+
+- **Match verdict:** `MATERIAL_DRIFT` · methods `mixed_proxy`
+- **Validate overall:** `SERIOUS_PROBLEMS` · fit `MINOR_DRIFT` · feasibility `RUNNABLE_IF_SHRUNK`
+- **Match summary:** The repository builds an honest and executable probe-supervised rewrite pilot, but its overtly labeled corpora and classifier-internal causal checks measure evaluation-like prompt recognition more convincingly than unverbalized, behaviorally consequential evaluation awareness.
+- **Validate summary:** Strong engineering scaffold and good research target, but the present positive-result path cannot distinguish internal evaluation awareness from explicit cue recognition, label leakage, and algebraically guaranteed probe movement.
+
+### Top drift / missing (match)
+- corpora.py defines eval labels with overt benchmark, test, audit, graded, and evaluation language, so probe AUROC primarily measures prompt-register classification
+- construct.py adds or subtracts the probe direction from stored activations and rereads linear classifiers, which does not establish a causal effect on model behavior
+- verbalized.py explicitly reveals Scenario (eval/deploy) and uses different elicitation instructions by context, contaminating the verbalized-versus-unverbalized comparison
+- rewrite.py is fixed lexical cue stripping rather than genuinely monitor-selected iterative environment generation
+
+### Blocking (validate)
+- `src/evalaware/evalaware/inflation.py`: Measured behavior generation sends only item['task'], discarding the eval/deploy wrapper, so it cannot measure behavior changes caused by evaluation awareness.
+- `src/evalaware/evalaware/verbalized.py`: The CoT prompt discards the original scenario, reveals the eval/deploy label explicitly, and applies condition-specific instructions.
+- `src/evalaware/evalaware/construct.py`: Causal steering edits stored activation arrays along the probe weight and re-scores them with linear functions; the reported score movement is algebraically guaranteed and no model behavior is intervened on.
+- `src/evalaware/evalaware/construct.py`: Text AUROC is evaluated on all rows including training data, while probe AUROC is evaluated on held-out families, making the required margin invalid.
