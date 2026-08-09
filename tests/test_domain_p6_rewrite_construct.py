@@ -121,6 +121,7 @@ def test_rewrite_recollect_mode_stamps(tmp_path):
             force_synthetic=False,
             model_name="openai-community/gpt2",
             max_recollect=16,
+            recollect_n_floor=8,
         )
     assert out["scoring_mode"] == "recollect_after_rewrite"
     assert out["measured_claims_ok"] is True

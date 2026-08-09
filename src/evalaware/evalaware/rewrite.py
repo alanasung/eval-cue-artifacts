@@ -29,12 +29,15 @@ from typing import Any
 
 import numpy as np
 
+from ..evaluation.metrics import minimum_detectable_effect, tost_equivalence
 from .common import read_json, result_dict, write_json
 from .features import EVAL_CUES, batch_activations, collect_activations, surface_cue_score
 from .monitors import score_monitor
 
 STAND_IN_MONITORS = ("sae", "lens", "attention")
 _DEFAULT_RECOLLECT_CAP = 64
+# Floor for measured transfer claims after rewrite recollect.
+_DEFAULT_RECOLLECT_FLOOR = 32
 
 
 def _strip_eval_cues(text: str) -> str:
@@ -80,6 +83,7 @@ def run_rewrite(
     layer: int = -2,
     dim: int = 32,
     max_recollect: int = _DEFAULT_RECOLLECT_CAP,
+    recollect_n_floor: int = _DEFAULT_RECOLLECT_FLOOR,
 ) -> dict[str, Any]:
     items = read_json(Path(inflation_metrics["artifact"]))["items"]
     supervising = "probe"
@@ -147,6 +151,8 @@ def run_rewrite(
                 "stand_in_monitors": stand_ins,
                 "transfer_uses_stand_ins": False,
                 "measured_claims_ok": False,
+                "recollect_n": 0,
+                "mde_transfer": None,
             },
         )
         return result_dict(
@@ -167,6 +173,8 @@ def run_rewrite(
             algebraic_ok=algebraic_ok,
             behavioral_ok=behavioral_ok,
             measured_claims_ok=False,
+            recollect_n=0,
+            mde_transfer=None,
         )
 
     from .monitors import fit_heldout_linear
@@ -320,6 +328,52 @@ def run_rewrite(
     )
     transfer_gap = reduction_sup - reduction_held
 
+    recollect_n = int(recollect_meta.get("n_recollected", 0) or 0)
+    if scoring_mode == "recollect_after_rewrite":
+        if recollect_n < int(recollect_n_floor):
+            measured_claims_ok = False
+            recollect_meta["below_floor"] = True
+            recollect_meta["recollect_n_floor"] = int(recollect_n_floor)
+        else:
+            recollect_meta["below_floor"] = False
+            recollect_meta["recollect_n_floor"] = int(recollect_n_floor)
+        mde_transfer = float(
+            minimum_detectable_effect(max(recollect_n, 2), sigma=0.5)
+        )
+        # TOST on per-round held-out reductions (or transfer gap replicates).
+        round_transfers = [
+            float(h["rates"].get("probe", 0.0))
+            - float(
+                np.mean([h["rates"].get(m, 0.0) for m in headline_held])
+                if headline_held
+                else 0.0
+            )
+            for h in history
+            if isinstance(h.get("rates"), dict)
+        ]
+        if len(round_transfers) < 2:
+            round_transfers = [float(transfer_gap), float(transfer_gap)]
+        tost_transfer = tost_equivalence(
+            round_transfers, low=-0.05, high=0.05, n_boot=400, seed=seed
+        )
+        transfer_null_claim = None
+        if abs(transfer_gap) < 1e-12 or (
+            -0.05 <= transfer_gap <= 0.05 and not tost_transfer["equivalent"]
+        ):
+            transfer_null_claim = (
+                "tost_equivalent"
+                if tost_transfer["equivalent"]
+                else "inconclusive: use TOST/MDE before claiming null transfer"
+            )
+    else:
+        mde_transfer = None
+        tost_transfer = {
+            "equivalent": False,
+            "note": "proxy scoring; TOST not licensing measured transfer",
+            "band": [-0.05, 0.05],
+        }
+        transfer_null_claim = "proxy_after_rewrite"
+
     n_valid = sum(1 for r in current if r.get("rewrite_round"))
     path = write_json(
         artifacts / "rewrite.json",
@@ -337,6 +391,11 @@ def run_rewrite(
             "scoring_mode": scoring_mode,
             "measured_claims_ok": measured_claims_ok,
             "recollect": recollect_meta,
+            "recollect_n": recollect_n,
+            "recollect_n_floor": int(recollect_n_floor),
+            "mde_transfer": mde_transfer,
+            "tost_transfer": tost_transfer,
+            "transfer_null_claim": transfer_null_claim,
             "construct_validity_retention": n_valid / max(1, accepted + rejected),
             "base_rates": base_rates,
             "final_rates": final_rates,
@@ -375,4 +434,7 @@ def run_rewrite(
         algebraic_ok=algebraic_ok,
         behavioral_ok=behavioral_ok,
         transfer_uses_stand_ins=False,
+        recollect_n=recollect_n,
+        mde_transfer=mde_transfer,
+        transfer_null_claim=transfer_null_claim,
     )

@@ -114,10 +114,28 @@ def construct(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
 
 def verbalized(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
     artifacts = ensure_artifacts(run_dir)
+    from evalaware.evalaware.common import read_json
+
+    construct_metrics = None
+    construct_path = artifacts / "construct.json"
+    if construct_path.is_file():
+        construct_payload = read_json(construct_path)
+        construct_metrics = {
+            "artifact": str(construct_path),
+            "construct_status": construct_payload.get("construct_status"),
+            "internal_awareness_licensed": construct_payload.get("claim")
+            == "internal_awareness_licensed",
+            "algebraic_ok": construct_payload.get("algebraic_ok"),
+            "behavioral_ok": construct_payload.get("behavioral_ok"),
+        }
     return run_verbalized(
         seed=cfg_seed(cfg),
         artifacts=artifacts,
         probe_metrics={"artifact": str(artifacts / "probe.json")},
+        model_name=_model_name(cfg),
+        revision=_revision(cfg),
+        force_synthetic=_force_synthetic(cfg),
+        construct_metrics=construct_metrics,
     )
 
 
@@ -127,6 +145,9 @@ def inflation(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
         seed=cfg_seed(cfg),
         artifacts=artifacts,
         verbalized_metrics={"artifact": str(artifacts / "verbalized.json")},
+        model_name=_model_name(cfg),
+        revision=_revision(cfg),
+        force_synthetic=_force_synthetic(cfg),
     )
 
 
@@ -157,6 +178,7 @@ def rewrite(cfg: DictConfig, run_dir: Path) -> dict[str, Any]:
         layer=int(cfg_param(cfg, "probe_layer", -2) or -2),
         dim=int(cfg_param(cfg, "activation_dim", 32) or 32),
         max_recollect=int(cfg_param(cfg, "rewrite_recollect_cap", 64) or 64),
+        recollect_n_floor=int(cfg_param(cfg, "rewrite_recollect_floor", 32) or 32),
     )
 
 

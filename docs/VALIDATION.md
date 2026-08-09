@@ -54,3 +54,16 @@ Grok PASS_WITH_NOTES on the measurable core. Codex SERIOUS_PROBLEMS remains on l
 
 Residual: generation-time residual steer / live CoT scoring beyond simulated rubrics; SAE/lens/attention remain stand-ins.
 
+## P7 rigor pass (stats + claim contracts)
+
+| Fix | Status |
+|---|---|
+| Shared calibrated local refusal scorer for inflation (`behavior_labeler_id` + fixture agreement) | OK (`behavior_labeler.py`, `inflation.py`) |
+| Unverbalized-fraction headline requires measured CoT + construct held | OK (`verbalized.py` `headline_licensed`) |
+| CI spanning 0 → TOST before “no silent awareness” | OK (`tost_unverbalized`, `no_silent_awareness_ok`) |
+| Rewrite recollect power: `recollect_n`, `mde_transfer`; claims gated below floor | OK (`rewrite.py`, floor default 32) |
+| Headline MDE/TOST wired for unverbalized / inflation slope / transfer | OK |
+| Hub-free domain P7 tests | OK (`test_domain_p7_stats_claims.py`) |
+
+Residual: full residual recollect on every rewrite candidate (cap remains); SAE/lens/attention stand-ins; generation-time steer.
+
