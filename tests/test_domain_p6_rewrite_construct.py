@@ -178,7 +178,7 @@ def test_collect_activations_stamps_chat_template():
             self._fn = fn
 
             class H:
-                def remove(self_inner):
+                def remove(self):
                     pass
 
             return H()
