@@ -3,7 +3,7 @@
 See [CLAUDE.md](CLAUDE.md) for the full build instructions; this file exists so
 that agents which look for `AGENTS.md` find the same context.
 
-Project: Closing the Loop on Unverbalized Evaluation Awareness
+Project: Catching Silent Test Recognition Before Scores Look Safe
 Package: `src/evalaware`
 Entry point: `python -m evalaware --help`
 

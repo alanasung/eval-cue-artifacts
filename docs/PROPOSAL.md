@@ -1,4 +1,4 @@
-# Hardening Evaluations Against Unverbalized Awareness
+# Catching Silent Test Recognition Before Scores Look Safe
 
 **Target project.** Securing alignment evaluations against unverbalized evaluation awareness
 **Research areas.** Evaluations; Mechanistic interpretability; Behavioral evaluation of LLMs

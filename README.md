@@ -1,15 +1,15 @@
 <p align="center">
-  <h1 align="center">Hardening Evaluations Against Unverbalized Awareness</h1>
-  <p align="center"><strong>Probe for silent evaluation awareness, then supervise a rewrite loop that preserves construct validity.</strong></p>
+  <h1 align="center">Catching Silent Test Recognition Before Scores Look Safe</h1>
+  <p align="center"><strong>Train a white-box probe for evaluation cues the model never says aloud, then rewrite scenarios until the probe cools without breaking the task.</strong></p>
   </p>
 
 ---
 
 ## Overview
 
-This repository implements experimental profiles for **Hardening Evaluations Against Unverbalized Awareness**. Config, caching, hooks, metrics, ablations, reporting, and CI are built for reproducible local pilots on small open-weight models.
+This repository implements experimental profiles for **Catching Silent Test Recognition Before Scores Look Safe**. Config, caching, hooks, metrics, ablations, reporting, and CI are built for reproducible local pilots on small open-weight models.
 
-Hypothesis (one line): Verbalized evaluation awareness undercounts real awareness. A linear probe will fire on scenarios the model never flags aloud, safety scores will be measurably inflated on high-probe scenarios, and an automated rewrite loop supervised by the probe can lower probe-detected awareness while holding the scenario's construct validity fixed.
+Hypothesis (one line): Models can recognize evaluation conditions without saying so; a probe on internals can expose that gap and supervise scenario edits that reduce it while keeping the underlying task intact.
 
 ## Motivation
 
@@ -86,8 +86,8 @@ registry and must pass the harness-validation script before any measured claim.
 ## Citation
 
 ```bibtex
-@misc{eval_awareness_pilot,
-  title        = {Hardening Evaluations Against Unverbalized Awareness},
+@misc{silent_test_recognition,
+  title        = {Catching Silent Test Recognition Before Scores Look Safe},
   author       = {Alana Sung},
   year         = {2026},
   howpublished = {Technical report},

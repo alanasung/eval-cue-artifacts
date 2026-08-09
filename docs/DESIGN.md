@@ -1,14 +1,14 @@
-# Design Document: Closing the Loop on Unverbalized Evaluation Awareness
+# Design Document: Catching Silent Test Recognition Before Scores Look Safe
 
 ## 1. Purpose
 
-This document is the method contract for **Closing the Loop on Unverbalized Evaluation Awareness**. It specifies what is
+This document is the method contract for **Catching Silent Test Recognition Before Scores Look Safe**. It specifies what is
 measured, how measurement is instrumented, which artifacts are produced, and
 which claims are out of scope for the pilot profile.
 
 One-liner: Train a probe for 'this is a test', then let it referee an automated rewrite loop that makes evaluations harder to recognize.
 
-Hypothesis: Verbalized evaluation awareness undercounts real awareness. A linear probe will fire on scenarios the model never flags aloud, safety scores will be measurably inflated on high-probe scenarios, and an automated rewrite loop supervised by the probe can lower probe-detected awareness while holding the scenario's construct validity fixed.
+Hypothesis: Models can recognize evaluation conditions without saying so; a probe on internals can expose that gap and supervise scenario edits that reduce it while keeping the underlying task intact.
 
 ## 2. Scope
 

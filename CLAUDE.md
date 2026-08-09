@@ -4,7 +4,7 @@ Context for coding agents working in this repository.
 
 ## What this is
 
-Research implementation of "Hardening Evaluations Against Unverbalized Awareness".
+Research implementation of "Catching Silent Test Recognition Before Scores Look Safe".
 
 ## Hard constraints
 

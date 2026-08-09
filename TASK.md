@@ -1,4 +1,4 @@
-# TASK.md — Closing the Loop on Unverbalized Evaluation Awareness
+# TASK.md — Catching Silent Test Recognition Before Scores Look Safe
 
 ID convention: `I##` infrastructure, `D##` data, `M##` modelling / hooks,
 `E##` experiments, `A##` ablations, `S##` sweeps, `R##` reporting.

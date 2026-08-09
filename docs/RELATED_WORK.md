@@ -1,6 +1,6 @@
 # Related work
 
-This note situates **Hardening Evaluations Against Unverbalized Awareness** against related literature.
+This note situates **Catching Silent Test Recognition Before Scores Look Safe** against related literature.
 
 ## Positioning
 
