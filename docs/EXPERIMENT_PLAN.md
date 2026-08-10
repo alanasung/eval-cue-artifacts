@@ -1,4 +1,4 @@
-# Experiment plan
+# Experiment plan — Evaluation Wording That Moves Safety Numbers
 
 Stage-by-stage design. Each stage is registered in `src/evalaware/stages.py`
 and appears in `python -m evalaware stages`.

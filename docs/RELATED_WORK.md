@@ -1,12 +1,12 @@
 # Related work
 
-This note situates **Catching Silent Test Recognition Before Scores Look Safe** against related literature.
+This note situates **Evaluation Wording That Moves Safety Numbers** against related literature.
 
 ## Positioning
 
 Train a probe for 'this is a test', then let it referee an automated rewrite loop that makes evaluations harder to recognize.
 
-The design hypothesis is: Verbalized evaluation awareness undercounts real awareness. A linear probe will fire on scenarios the model never flags aloud, safety scores will be measurably inflated on high-probe scenarios, and an automated rewrite loop supervised by the probe can lower probe-detected awareness while holding the scenario's construct validity fixed.
+The design hypothesis is: Evaluation-register wording can move measured safety scores without changing the underlying task; internal probes plus guarded rewrites can reduce that artifact.
 
 ## Engagement rules
 

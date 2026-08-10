@@ -1,10 +1,10 @@
-# Build instructions
+# Evaluation Wording That Moves Safety Numbers
 
 Context for coding agents working in this repository.
 
 ## What this is
 
-Research implementation of "Catching Silent Test Recognition Before Scores Look Safe".
+Research implementation of "Evaluation Wording That Moves Safety Numbers".
 
 ## Hard constraints
 

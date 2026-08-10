@@ -1,14 +1,14 @@
-# Design Document: Catching Silent Test Recognition Before Scores Look Safe
+# Evaluation Wording That Moves Safety Numbers — design
 
 ## 1. Purpose
 
-This document is the method contract for **Catching Silent Test Recognition Before Scores Look Safe**. It specifies what is
+This document is the method contract for **Evaluation Wording That Moves Safety Numbers**. It specifies what is
 measured, how measurement is instrumented, which artifacts are produced, and
 which claims are out of scope for the pilot profile.
 
 One-liner: Train a probe for 'this is a test', then let it referee an automated rewrite loop that makes evaluations harder to recognize.
 
-Hypothesis: Models can recognize evaluation conditions without saying so; a probe on internals can expose that gap and supervise scenario edits that reduce it while keeping the underlying task intact.
+Hypothesis: Evaluation-register wording can move measured safety scores without changing the underlying task; internal probes plus guarded rewrites can reduce that artifact.
 
 ## 2. Scope
 

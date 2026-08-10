@@ -1,4 +1,4 @@
-"""Domain package: unverbalized evaluation awareness + rewrite loop."""
+"""Domain package: evaluation-register cues + guarded rewrite loop."""
 
 from __future__ import annotations
 

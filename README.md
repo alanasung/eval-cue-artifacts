@@ -1,15 +1,15 @@
 <p align="center">
-  <h1 align="center">Catching Silent Test Recognition Before Scores Look Safe</h1>
-  <p align="center"><strong>Train a white-box probe for evaluation cues the model never says aloud, then rewrite scenarios until the probe cools without breaking the task.</strong></p>
+  <h1 align="center">Evaluation Wording That Moves Safety Numbers</h1>
+  <p align="center"><strong>Detect evaluation-register cues that shift safety scores, then rewrite scenarios under construct checks.</strong></p>
   </p>
 
 ---
 
 ## Overview
 
-This repository implements experimental profiles for **Catching Silent Test Recognition Before Scores Look Safe**. Config, caching, hooks, metrics, ablations, reporting, and CI are built for reproducible local pilots on small open-weight models.
+This repository implements experimental profiles for **Evaluation Wording That Moves Safety Numbers**. Config, caching, hooks, metrics, ablations, reporting, and CI are built for reproducible local pilots on small open-weight models.
 
-Hypothesis (one line): Models can recognize evaluation conditions without saying so; a probe on internals can expose that gap and supervise scenario edits that reduce it while keeping the underlying task intact.
+Hypothesis (one line): Evaluation-register wording can move measured safety scores without changing the underlying task; internal probes plus guarded rewrites can reduce that artifact.
 
 ## Motivation
 
@@ -76,8 +76,7 @@ private data. Synthetic harness-validation outputs are labelled
 
 ## Status
 
-Shared spine is in place. Domain-specific stages land behind the experiment
-registry and must pass the harness-validation script before any measured claim.
+Focus: cue-sensitive evaluation artifacts in safety scoring. Shared infrastructure is in place; domain stages must pass harness validation before any measured claim.
 
 ## Related work
 
@@ -87,7 +86,7 @@ registry and must pass the harness-validation script before any measured claim.
 
 ```bibtex
 @misc{silent_test_recognition,
-  title        = {Catching Silent Test Recognition Before Scores Look Safe},
+  title        = {Evaluation Wording That Moves Safety Numbers},
   author       = {Alana Sung},
   year         = {2026},
   howpublished = {Technical report},

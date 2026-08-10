@@ -1,6 +1,5 @@
-# Catching Silent Test Recognition Before Scores Look Safe
+# Evaluation Wording That Moves Safety Numbers
 
-**Target project.** Securing alignment evaluations against unverbalized evaluation awareness
 **Research areas.** Evaluations; Mechanistic interpretability; Behavioral evaluation of LLMs
 
 ## Summary
@@ -9,7 +8,7 @@ Train a probe for 'this is a test', then let it referee an automated rewrite loo
 
 ## Hypothesis
 
-Verbalized evaluation awareness undercounts real awareness. A linear probe will fire on scenarios the model never flags aloud, safety scores will be measurably inflated on high-probe scenarios, and an automated rewrite loop supervised by the probe can lower probe-detected awareness while holding the scenario's construct validity fixed.
+Evaluation-register wording can move measured safety scores without changing the underlying task; internal probes plus guarded rewrites can reduce that artifact.
 
 A hypothesis worth testing has to be able to lose. This one loses if the
 measurements below come back null, and the design is built so that a null is

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "evalaware"
 version = "0.1.0"
-description = "Detect silent evaluation cues and rewrite scenarios under construct checks."
+description = "Detect evaluation-register cues that inflate safety scores and rewrite under construct checks."
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 license = { text = "MIT" }

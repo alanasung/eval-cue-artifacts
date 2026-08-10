@@ -1,9 +1,9 @@
-# Repository guide
+# Evaluation Wording That Moves Safety Numbers
 
 See [CLAUDE.md](CLAUDE.md) for the full build instructions; this file exists so
 that agents which look for `AGENTS.md` find the same context.
 
-Project: Catching Silent Test Recognition Before Scores Look Safe
+Project: Evaluation Wording That Moves Safety Numbers
 Package: `src/evalaware`
 Entry point: `python -m evalaware --help`
 

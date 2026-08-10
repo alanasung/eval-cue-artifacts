@@ -1,4 +1,4 @@
-"""Experiment stages for unverbalized evaluation awareness."""
+"""Experiment stages for evaluation-register cue detection and rewrite."""
 
 from __future__ import annotations
 

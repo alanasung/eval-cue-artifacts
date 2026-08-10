@@ -1,4 +1,4 @@
-# TASK.md — Catching Silent Test Recognition Before Scores Look Safe
+# Evaluation Wording That Moves Safety Numbers
 
 ID convention: `I##` infrastructure, `D##` data, `M##` modelling / hooks,
 `E##` experiments, `A##` ablations, `S##` sweeps, `R##` reporting.
